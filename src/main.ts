@@ -1,10 +1,14 @@
 import { createApp } from 'vue'
+import ArcoVue from '@arco-design/web-vue'
 import App from './App.vue'
-import ArcoVue from '@arco-design/web-vue';
-import '@arco-design/web-vue/dist/arco.css';
+import store from './store'
+import router from './router/index'
+import '@arco-design/web-vue/dist/arco.css'
 
-const app = createApp(App);
+const app = createApp(App)
 app.use(ArcoVue, {
-  componentPrefix: 'arco'
-});
-app.mount('#app');
+  componentPrefix: 'arco',
+})
+app.use(store)
+app.use(router)
+app.mount('#app')

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button } from "@arco-design/web-vue";
+import { Button } from '@arco-design/web-vue'
 </script>
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <Button type="primary">Hello Arco</Button>,
+  <Button type="primary">Hello Arco</Button>
 </template>
 
 <style>
