@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import ArcoVue from '@arco-design/web-vue'
 
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import store from './store'
 import router from './router/index'
 import '@arco-design/web-vue/dist/arco.css'
 
@@ -11,6 +11,6 @@ app.use(ArcoVue, {
   componentPrefix: 'arco',
 })
 
-app.use(store)
+.use(createPinia())
 app.use(router)
 app.mount('#app')

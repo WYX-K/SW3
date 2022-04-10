@@ -1,5 +1,12 @@
-import { createPinia } from 'pinia'
+import { defineStore } from 'pinia'
 
-const store = createPinia()
+const useIsLoginStore = defineStore({
+  id: 'login',
+  state: () => ({
+    islogin: false
+  }),
+  getters: {},
+  actions: {}
+})
 
-export default store
+export default useIsLoginStore
