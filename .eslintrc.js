@@ -25,7 +25,7 @@ module.exports = {
       { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] },
     ], // 强制使用一致的缩进
     quotes: ['error', 'single'], // 强制使用一致的反勾号、双引号或单引号
-    'comma-dangle': ['error', 'always-multiline'], // 要求或禁止末尾逗号
+    'comma-dangle': 'off', // 要求或禁止末尾逗号
     'object-curly-spacing': ['error', 'always'], // 强制在大括号中使用一致的空格
     'max-len': ['error', 120], // 强制一行的最大长度
     'no-new': 'off', // 禁止使用 new 以避免产生副作用
@@ -37,7 +37,7 @@ module.exports = {
     'import/no-cycle': 'off', // 禁止一个模块导入一个有依赖路径的模块回到自己身上
     'arrow-parens': 'off', // 要求箭头函数的参数使用圆括号
     semi: ['error', 'never'], // 要求或禁止使用分号代替 ASI
-    eqeqeq: 'off', // 要求使用 === 和 !==
+    eqeqeq: 'warn', // 要求使用 === 和 !==
     'no-param-reassign': 'off', // 禁止对 function 的参数进行重新赋值
     'import/prefer-default-export': 'off', // 如果模块只输入一个名字，则倾向于默认输出
     'no-use-before-define': 'off', // 禁止在变量定义之前使用它们，则倾向于默认输出

@@ -1,6 +1,7 @@
+/* eslint-disable arrow-body-style */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { createStyleImportPlugin } from 'vite-plugin-style-import';
+import { createStyleImportPlugin } from 'vite-plugin-style-import'
 
 export default defineConfig({
   plugins: [
@@ -12,10 +13,8 @@ export default defineConfig({
           esModule: true,
           resolveStyle: (name) => {
             // css
-            return `@arco-design/web-vue/es/${name}/style/css.js`
-            // less
-            return `@arco-design/web-vue/es/${name}/style/index.js`
-          },
+            return `@arco-design/web-vue/es/${ name }/style/css.js`
+          }
         }
       ]
     })
