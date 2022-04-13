@@ -1,12 +1,29 @@
 <template>
-  <router-view></router-view>
+  <a-config-provider :locale="locale">
+    <router-view></router-view>
+    <!-- <global-setting /> -->
+  </a-config-provider> 
 </template>
 
 <script lang="ts" setup>
-import useIsLoginStore from '@/store/index'
+import { computed } from 'vue'
+import enUS from '@arco-design/web-vue/es/locale/lang/en-us'
+import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn'
+// import GlobalSetting from '@/components/global-setting/index.vue'
+import useLocale from '@/hooks/locale'
 
-const isLoginStore = useIsLoginStore()
-console.log(isLoginStore.islogin)
+const { currentLocale } = useLocale()
+
+const locale = computed(() => {
+  switch (currentLocale.value) {
+    case 'zh-CN':
+      return zhCN
+    case 'en-US':
+      return enUS
+    default:
+      return enUS
+  }
+})
 </script>
 
 <style>

@@ -26,9 +26,20 @@ export default defineConfig({
       '/api': {
         target: 'https://cms-1591686-1309449446.ap-shanghai.run.tcloudbase.com', // 代理的地址
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
       }
     }
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          hack: `true; @import (reference) "${ resolve(
+            'src/assets/style/breakpoint.less'
+          ) }";`,
+        },
+        javascriptEnabled: true,
+      },
+    },
   },
   resolve: {
     alias: {
