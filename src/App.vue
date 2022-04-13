@@ -1,13 +1,12 @@
 <template>
-  <login></login>
-  {{ isLoginStore.islogin }}
+  <router-view></router-view>
 </template>
 
 <script lang="ts" setup>
-import login from '@/views/login/login.vue'
 import useIsLoginStore from '@/store/index'
 
 const isLoginStore = useIsLoginStore()
+console.log(isLoginStore.islogin)
 </script>
 
 <style>

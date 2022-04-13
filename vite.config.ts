@@ -21,14 +21,12 @@ export default defineConfig({
     })
   ],
   server: {
-    host: '0.0.0.0',
-    port: 9999, // 更改启动端口
     // 反向代理
     proxy: {
       '/api': {
-        target: 'http://10.111.42.142:8000', // 代理的地址
+        target: 'https://cms-1591686-1309449446.ap-shanghai.run.tcloudbase.com', // 代理的地址
         changeOrigin: true,
-        // rewrite: path => path.replace(/^\/api/, '')
+        rewrite: path => path.replace(/^\/api/, '')
       }
     }
   },
