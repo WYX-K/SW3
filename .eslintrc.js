@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  parser: 'vue-eslint-parser',
   globals: {
     defineEmits: 'readonly',
     defineProps: 'readonly',
@@ -9,6 +10,7 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'airbnb-base',
   ],
+  
   parserOptions: {
     parser: '@typescript-eslint/parser',
     ecmaVersion: 2020,

@@ -12,5 +12,4 @@ interface ImportMetaEnv {
 }
 declare module 'vue-i18n/index'
 declare module 'nprogress'
-declare module 'node'
 declare module 'consola/src/browser'

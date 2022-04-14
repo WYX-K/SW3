@@ -9,19 +9,17 @@
           class="layout-sider"
           breakpoint="xl"
           :collapsible="true"
+          :collapsed="collapsed"
+          :width="menuWidth"
+          :style="{ paddingTop: navbar ? '60px' : '' }"
+          :hide-trigger="true"
+          @collapse="setCollapsed"
         >
           <div class="menu-wrapper">
-          <!-- <Menu /> -->
+            <Menu />
           </div>
         </a-layout-sider>
-        <a-drawer
-          placement="left"
-          :footer="false"
-          mask-closable
-          :closable="false"
-        >
-        </a-drawer>
-        <a-layout class="layout-content">
+        <a-layout class="layout-content" :style="paddingStyle">
           <a-layout-content>
             <PageLayout />
           </a-layout-content>
@@ -33,9 +31,42 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import usePermission from '@/hooks/permission'
+import { useAppStore, useUserStore } from '@/store'
 import Footer from '@/components/footer/index.vue'
 import NavBar from '@/components/navbar/index.vue'
 import PageLayout from './page-layout.vue'
+import Menu from '@/components/menu/index.vue'
+
+const appStore = useAppStore()
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
+const permission = usePermission()
+const navbarHeight = '60px'
+const navbar = computed(() => appStore.navbar)
+const renderMenu = computed(() => appStore.menu)
+const hideMenu = computed(() => appStore.hideMenu)
+const menuWidth = computed(() => (appStore.menuCollapse ? 48 : appStore.menuWidth))
+const collapsed = computed(() => appStore.menuCollapse)
+const paddingStyle = computed(() => {
+  const paddingLeft = renderMenu.value && !hideMenu.value
+    ? { paddingLeft: `${ menuWidth.value }px` }
+    : {}
+  const paddingTop = navbar.value ? { paddingTop: navbarHeight } : {}
+  return { ...paddingLeft, ...paddingTop }
+})
+const setCollapsed = (val: boolean) => {
+  appStore.updateSettings({ menuCollapse: val })
+}
+watch(
+  () => userStore.role,
+  (roleValue) => {
+    if (roleValue && !permission.accessRouter(route)) { router.push({ name: 'notFound' }) }
+  }
+)
 </script>
 
 <style scoped lang="less">

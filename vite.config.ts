@@ -3,10 +3,12 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import { createStyleImportPlugin } from 'vite-plugin-style-import'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
   plugins: [
     vue(),
+    vueJsx(),
     createStyleImportPlugin({
       libs: [
         {
@@ -44,6 +46,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, '.', 'src'),
+      vue: 'vue/dist/vue.esm-bundler.js'
     },
   }
 })
