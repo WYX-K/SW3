@@ -1,8 +1,16 @@
 <template>
   <div class="banner">
     <div class="banner-inner">
-      <a-carousel class="carousel" animation-name="fade">
-        <a-carousel-item v-for="item in carouselItem" :key="item.slogan">
+      <a-carousel
+        class="carousel"
+        animation-name="fade"
+        :auto-play="true"
+        show-arrow="hover"
+      >
+        <a-carousel-item 
+          v-for="item in carouselItem" 
+          :key="item.slogan" 
+        >
           <div :key="item.slogan" class="carousel-item">
             <div class="carousel-title">{{ item.slogan }}</div>
             <div class="carousel-sub-title">{{ item.subSlogan }}</div>

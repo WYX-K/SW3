@@ -1,4 +1,21 @@
 <template>
+  <a-switch
+    v-model="localeValue" 
+    class="switch" 
+    checked-color="#F53F3F"
+    unchecked-color="#14C9C9"
+    size="large"
+    checked-value="en-US"
+    unchecked-value="zh-CN"
+    @change="switchChange"
+  >
+    <template #checked>
+      EN
+    </template>
+    <template #unchecked>
+      中
+    </template>
+  </a-switch>
   <div class="login-form-wrapper">
     <div class="login-form-title">{{ $t('login.form.title') }}</div>
     <div class="login-form-sub-title">{{ $t('login.form.title') }}</div>
@@ -72,7 +89,10 @@ import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n'
 import consola from 'consola'
 import useLoading from '@/hooks/loading'
+import { useUserStore } from '@/store'
 import { login, LoginData } from '@/api/login'
+
+import useLocale from '@/hooks/locale'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -82,7 +102,7 @@ const userInfo = reactive({
   username: 'simon',
   password: 'simon',
 })
-
+const userStore = useUserStore()
 const handleSubmit = async ({
   errors,
   values,
@@ -97,13 +117,15 @@ const handleSubmit = async ({
       data.append('username', values.username)
       data.append('pwd', values.password)
       const res = await login(data)
-      consola.info(res)
       if (res.status === 200) {
+        consola.success(res)
+        userStore.login()
         router.push({
           name: 'home',
         })
         Message.success(t('login.form.login.success'))
       } else {
+        consola.error(res)
         Message.error(t('login.form.login.fail'))
       }
     } catch (err) {
@@ -116,9 +138,25 @@ const handleSubmit = async ({
 const setRememberPassword = () => {
   //
 }
+
+const localeValue = ref('')
+const locale = useLocale()
+if (locale.currentLocale.value === 'zh-CN') {
+  localeValue.value = 'zh-CN'
+} else {
+  localeValue.value = 'en-US'
+}
+const switchChange = (value: string) => {
+  locale.changeLocale(value)
+}
 </script>
 
 <style lang="less" scoped>
+  .switch{
+    position: absolute;
+    right: 5vh;
+    top: 2vh;
+  }
   .login-form {
     &-wrapper {
       width: 320px;
