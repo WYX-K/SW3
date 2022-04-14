@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
+import { computed, watch, ref, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import usePermission from '@/hooks/permission'
 import { useAppStore, useUserStore } from '@/store'
@@ -59,6 +59,7 @@ const paddingStyle = computed(() => {
   return { ...paddingLeft, ...paddingTop }
 })
 const setCollapsed = (val: boolean) => {
+  console.log('setCollapsed', val)
   appStore.updateSettings({ menuCollapse: val })
 }
 watch(
@@ -67,6 +68,10 @@ watch(
     if (roleValue && !permission.accessRouter(route)) { router.push({ name: 'notFound' }) }
   }
 )
+const drawerVisible = ref(false)
+provide('toggleDrawerMenu', () => {
+  drawerVisible.value = !drawerVisible.value
+})
 </script>
 
 <style scoped lang="less">
