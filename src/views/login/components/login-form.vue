@@ -17,8 +17,8 @@
     </template>
   </a-switch>
   <div class="login-form-wrapper">
-    <div class="login-form-title">{{ $t('login.form.title') }}</div>
-    <div class="login-form-sub-title">{{ $t('login.form.title') }}</div>
+    <div class="login-form-title">{{ t('login.form.title') }}</div>
+    <div class="login-form-sub-title">{{ t('login.form.title') }}</div>
     <div class="login-form-error-msg">{{ errorMessage }}</div>
     <a-form
       ref="loginForm"
@@ -29,13 +29,13 @@
     >
       <a-form-item
         field="username"
-        :rules="[{ required: true, message: $t('login.form.userName.errMsg') }]"
+        :rules="[{ required: true, message: t('login.form.userName.errMsg') }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input
           v-model="userInfo.username"
-          :placeholder="$t('login.form.userName.placeholder')"
+          :placeholder="t('login.form.userName.placeholder')"
         >
           <template #prefix>
             <icon-user />
@@ -44,14 +44,15 @@
       </a-form-item>
       <a-form-item
         field="password"
-        :rules="[{ required: true, message: $t('login.form.password.errMsg') }]"
+        :rules="[{ required: true, message: t('login.form.password.errMsg') }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input-password
           v-model="userInfo.password"
-          :placeholder="$t('login.form.password.placeholder')"
+          :placeholder="t('login.form.password.placeholder')"
           allow-clear
+          autocomplete="off"
         >
           <template #prefix>
             <icon-lock />
@@ -61,9 +62,9 @@
       <a-space :size="16" direction="vertical">
         <div class="login-form-password-actions">
           <a-checkbox checked="rememberPassword" @change="setRememberPassword">
-            {{ $t('login.form.rememberPassword') }}
+            {{ t('login.form.rememberPassword') }}
           </a-checkbox>
-          <a-link>{{ $t('login.form.forgetPassword') }}</a-link>
+          <a-link>{{ t('login.form.forgetPassword') }}</a-link>
         </div>
         <a-button
           type="primary"
@@ -71,10 +72,10 @@
           long
           :loading="loading"
         >
-          {{ $t('login.form.login') }}
+          {{ t('login.form.login') }}
         </a-button>
         <a-button type="text" long class="login-form-register-btn">
-          {{ $t('login.form.register') }}
+          {{ t('login.form.register') }}
         </a-button>
       </a-space>
     </a-form>
@@ -86,7 +87,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { Message, Notification } from '@arco-design/web-vue'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
 import useLoading from '@/hooks/loading'
 import { useUserStore } from '@/store'

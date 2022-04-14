@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n/index'
 import { Message } from '@arco-design/web-vue'
 
 export default function useLocale() {

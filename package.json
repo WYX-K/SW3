@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.23.0",
-    "@types/nprogress": "^0.2.0",
     "@vueuse/core": "^8.2.5",
     "axios": "^0.26.1",
     "mitt": "^3.0.0",
@@ -20,7 +19,6 @@
     "vue-router": "4"
   },
   "devDependencies": {
-    "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-vue": "^2.3.0",

@@ -16,7 +16,7 @@
     </div>
     <ul class="right-side">
       <li>
-        <a-tooltip :content="$t('settings.search')">
+        <a-tooltip :content="t('settings.search')">
           <a-button class="nav-btn" type="outline" :shape="'circle'">
             <template #icon>
               <icon-search />
@@ -25,7 +25,7 @@
         </a-tooltip>
       </li>
       <li>
-        <a-tooltip :content="$t('settings.language')">
+        <a-tooltip :content="t('settings.language')">
           <a-button
             class="nav-btn"
             type="outline"
@@ -54,8 +54,8 @@
         <a-tooltip
           :content="
             theme === 'light'
-              ? $t('settings.navbar.theme.toDark')
-              : $t('settings.navbar.theme.toLight')
+              ? t('settings.navbar.theme.toDark')
+              : t('settings.navbar.theme.toLight')
           "
         >
           <a-button
@@ -84,7 +84,7 @@
               <a-space @click="handleLogout">
                 <icon-export />
                 <span>
-                  {{ $t('messageBox.logout') }}
+                  {{ t('messageBox.logout') }}
                 </span>
               </a-space>
             </a-doption>
@@ -98,6 +98,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
+import { useI18n } from 'vue-i18n/index'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
@@ -106,7 +107,7 @@ import { useAppStore } from '@/store'
 const triggerBtn = ref()
 const { changeLocale } = useLocale()
 const locales = [...LOCALE_OPTIONS]
-
+const { t } = useI18n()
 const setDropDownVisible = () => {
   const event = new MouseEvent('click', {
     view: window,
