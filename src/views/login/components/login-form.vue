@@ -92,6 +92,7 @@ import useLoading from '@/hooks/loading'
 import { useUserStore } from '@/store'
 import { login, LoginData } from '@/api/login'
 
+import useCurrentInstance from '@/utils/useCurrentInstance'
 import useLocale from '@/hooks/locale'
 
 const router = useRouter()
@@ -129,7 +130,11 @@ const handleSubmit = async ({
         Message.error(t('login.form.login.fail'))
       }
     } catch (err) {
-      errorMessage.value = (err as Error).message
+      const { proxy } = useCurrentInstance()
+      proxy.$notification.error({
+        content: (err as Error).message
+      })
+      consola.error(err)
     } finally {
       setLoading(false)
     }

@@ -39,3 +39,5 @@ axios.interceptors.response.use(
     Message.warning('Networking error')
   }
 )
+
+export default axios
