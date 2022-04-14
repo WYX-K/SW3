@@ -4,6 +4,7 @@ import NProgress from 'nprogress' // progress bar
 import usePermission from '@/hooks/permission'
 import { useUserStore } from '@/store'
 import appRoutes from '../routes'
+import { getToken } from '@/utils/auth'
 
 export default function setupPermissionGuard(router: Router) {
   router.beforeEach(async (to, _from, next) => {
@@ -23,7 +24,7 @@ export default function setupPermissionGuard(router: Router) {
       }
       NProgress.done()
     }
-    if (userStore.getLoginStatus()) {
+    if (getToken()) {
       if (userStore.role) {
         crossroads()
       } else {

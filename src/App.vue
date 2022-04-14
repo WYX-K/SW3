@@ -10,6 +10,9 @@ import enUS from '@arco-design/web-vue/es/locale/lang/en-us'
 import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn'
 import useLocale from '@/hooks/locale'
 
+if (performance.navigation.type !== 1) {
+  localStorage.clear()
+}
 const { currentLocale } = useLocale()
 document.body.removeAttribute('arco-theme')
 const locale = computed(() => {

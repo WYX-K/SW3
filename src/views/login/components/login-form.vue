@@ -84,15 +84,13 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { Message } from '@arco-design/web-vue'
+import { Message, Notification } from '@arco-design/web-vue'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n'
 import consola from 'consola'
 import useLoading from '@/hooks/loading'
 import { useUserStore } from '@/store'
 import { login, LoginData } from '@/api/login'
-
-import useCurrentInstance from '@/utils/useCurrentInstance'
 import useLocale from '@/hooks/locale'
 
 const router = useRouter()
@@ -130,8 +128,7 @@ const handleSubmit = async ({
         Message.error(t('login.form.login.fail'))
       }
     } catch (err) {
-      const { proxy } = useCurrentInstance()
-      proxy.$notification.error({
+      Notification.error({
         content: (err as Error).message
       })
       consola.error(err)

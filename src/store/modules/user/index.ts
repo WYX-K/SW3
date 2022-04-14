@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { UserState } from './types'
+import { setToken, clearToken } from '@/utils/auth'
 import { removeRouteListener } from '@/utils/route-listener'
 
 const useUserStore = defineStore('user', {
@@ -28,6 +29,7 @@ const useUserStore = defineStore('user', {
     },
 
     login() {
+      setToken('USER')
       this.isLogin = true
     },
     
@@ -43,6 +45,8 @@ const useUserStore = defineStore('user', {
 
     logout() {
       this.isLogin = false
+      this.resetInfo()
+      clearToken()
       removeRouteListener()
     }
   },

@@ -81,7 +81,7 @@
           </a-avatar>
           <template #content>
             <a-doption>
-              <a-space>
+              <a-space @click="handleLogout">
                 <icon-export />
                 <span>
                   {{ $t('messageBox.logout') }}
@@ -100,6 +100,7 @@ import { ref, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
+import useUser from '@/hooks/user'
 import { useAppStore } from '@/store'
 
 const triggerBtn = ref()
@@ -131,6 +132,10 @@ const isDark = useDark({
 const toggleTheme = useToggle(isDark)
 
 const theme = computed(() => appStore.theme)
+const { logout } = useUser()
+const handleLogout = () => {
+  logout()
+}
 </script>
 
 <style scoped lang="less">
