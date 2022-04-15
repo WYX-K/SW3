@@ -24,6 +24,10 @@ const useUserStore = defineStore('user', {
       })
     },
 
+    getRole() {
+      return this.role
+    },
+
     getLoginStatus() {
       return this.isLogin
     },
