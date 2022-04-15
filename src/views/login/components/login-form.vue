@@ -85,14 +85,13 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { Message, Notification } from '@arco-design/web-vue'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
 import useLoading from '@/hooks/loading'
-import { useUserStore } from '@/store'
-import { login, LoginData } from '@/api/login'
+import { LoginData } from '@/api/login'
 import useLocale from '@/hooks/locale'
+import useUser from '@/hooks/user'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -102,7 +101,7 @@ const userInfo = reactive({
   username: 'simon',
   password: 'simon',
 })
-const userStore = useUserStore()
+
 const handleSubmit = async ({
   errors,
   values,
@@ -116,22 +115,9 @@ const handleSubmit = async ({
       const data = new FormData()
       data.append('username', values.username)
       data.append('pwd', values.password)
-      const res = await login(data)
-      if (res.status === 200) {
-        consola.success(res)
-        userStore.login()
-        router.push({
-          name: 'home',
-        })
-        Message.success(t('login.form.login.success'))
-      } else {
-        consola.error(res)
-        Message.error(t('login.form.login.fail'))
-      }
+      const { login } = useUser()
+      await login(data, router, t)
     } catch (err) {
-      Notification.error({
-        content: (err as Error).message
-      })
       consola.error(err)
     } finally {
       setLoading(false)

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { UserState } from './types'
 import { setToken, clearToken } from '@/utils/auth'
 import { removeRouteListener } from '@/utils/route-listener'
+import { getLoginData, LoginData } from '@/api/login'
 
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
@@ -17,12 +18,6 @@ const useUserStore = defineStore('user', {
   },
 
   actions: {
-    switchRoles() {
-      return new Promise((resolve) => {
-        this.role = this.role === 'user' ? 'admin' : 'user'
-        resolve(this.role)
-      })
-    },
 
     getRole() {
       return this.role
@@ -32,9 +27,11 @@ const useUserStore = defineStore('user', {
       return this.isLogin
     },
 
-    login() {
+    async login(data: LoginData) {
+      const res = await getLoginData(data)
       setToken('USER')
       this.isLogin = true
+      return res
     },
     
     // Set user's information

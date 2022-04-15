@@ -10,4 +10,5 @@ export default {
   'login.form.forgetPassword': 'Forgot password',
   'login.form.login': 'login',
   'login.form.register': 'register account',
+  'login.form.logout.success': 'logout success',
 }

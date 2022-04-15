@@ -19,8 +19,7 @@ setup() {
         set(value: boolean) {
           appStore.updateSettings({ menuCollapse: value })
         },
-    });
-    console.log(collapsed.value)
+    })
     const appRoute = computed(() => {
     return router
         .getRoutes()

@@ -99,6 +99,7 @@
 import { ref, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n/index'
+import { useRouter } from 'vue-router'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
@@ -131,11 +132,11 @@ const isDark = useDark({
 })
 
 const toggleTheme = useToggle(isDark)
-
+const router = useRouter()
 const theme = computed(() => appStore.theme)
 const { logout } = useUser()
 const handleLogout = () => {
-  logout()
+  logout(router, t)
 }
 </script>
 
