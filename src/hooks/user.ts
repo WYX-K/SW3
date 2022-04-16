@@ -15,17 +15,20 @@ export default function useUser() {
     })
   }
 
-  const login = async (data:LoginData, router: Router, t: any) => {
-    const res = await userStore.login(data)
-    if (res.status === 200) {
-      consola.success(res)
-      router.push({
-        name: 'home',
-      })
-      Message.success(t('login.form.login.success'))
-    } else {
-      consola.error(res)
-      Message.error(t('login.form.login.fail'))
+  const login = async (data: FormData, router: Router, t: any) => {
+    try {
+      const res = await userStore.login(data)
+      if (res.status) {
+        consola.success(res)
+        router.push({
+          name: 'home',
+        })
+        Message.success(t('login.form.login.success'))
+      } else {
+        Message.error(t('login.form.login.fail'))
+      }
+    } catch (err) {
+      consola.error(err)
     }
   }
 

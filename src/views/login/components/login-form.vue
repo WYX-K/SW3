@@ -87,7 +87,6 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n/index'
-import consola from 'consola'
 import useLoading from '@/hooks/loading'
 import { LoginData } from '@/api/login'
 import useLocale from '@/hooks/locale'
@@ -110,18 +109,13 @@ const handleSubmit = async ({
     values: LoginData
   }) => {
   if (!errors) {
+    const data = new FormData()
+    data.append('username', values.username)
+    data.append('pwd', values.password)
+    const { login } = useUser()
     setLoading(true)
-    try {
-      const data = new FormData()
-      data.append('username', values.username)
-      data.append('pwd', values.password)
-      const { login } = useUser()
-      await login(data, router, t)
-    } catch (err) {
-      consola.error(err)
-    } finally {
-      setLoading(false)
-    }
+    await login(data, router, t)
+    setLoading(false)
   }
 }
 const setRememberPassword = () => {

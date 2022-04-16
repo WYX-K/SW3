@@ -3,9 +3,8 @@
     <div class="logo">
       <img
         alt="logo"
-        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
+        src="/public/image/logo.png"
       />
-      <div class="logo-text">Arco Design Pro</div>
     </div>
     <LoginBanner />
     <div class="content">
@@ -32,7 +31,7 @@ import LoginForm from './components/login-form.vue'
 
     .banner {
       width: 550px;
-      background: linear-gradient(163.85deg, #1d2129 0%, #00308f 100%);
+      background: linear-gradient(163.85deg, #fafcfe 0%, #00308f 100%);
     }
 
     .content {

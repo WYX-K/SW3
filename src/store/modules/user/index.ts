@@ -27,7 +27,7 @@ const useUserStore = defineStore('user', {
       return this.isLogin
     },
 
-    async login(data: LoginData) {
+    async login(data: FormData) {
       const res = await getLoginData(data)
       setToken('USER')
       this.isLogin = true
