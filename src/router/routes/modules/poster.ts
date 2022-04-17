@@ -1,22 +1,22 @@
 export default {
-  path: 'home',
-  name: 'home',
+  path: 'poster',
+  name: 'poster',
   component: () => import('@/views/poster/index.vue'),
   meta: {
-    locale: 'menu.home',
+    locale: 'menu.poster',
     requiresAuth: true,
     icon: 'icon-home',
     order: 0,
   },
   children: [
     {
-      path: 'intro',
-      name: 'intro',
-      component: () => import('@/views/home/intro/index.vue'),
+      path: 'show',
+      name: 'show',
+      component: () => import('@/views/poster/show/index.vue'),
       meta: {
-        locale: 'menu.home.intro',
+        locale: 'menu.poster.show',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['user'],
       },
     },
   ],

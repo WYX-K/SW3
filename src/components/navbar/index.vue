@@ -1,11 +1,11 @@
 <template>
   <div class="navbar">
     <div class="left-side">
-      <a-space :size="-65">
+      <a-space :size="-25">
         <img
           alt="logo"
-          src="@/assets/image/logo.jpg"
-          style="width: 30%"
+          src="@/assets/image/logo.png"
+          style="width: 50%"
         />
         <a-typography-title
           :style="{ margin: 0, fontSize: '18px' }"

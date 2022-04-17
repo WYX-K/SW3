@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
-import { UserState } from './types'
-import { setToken, clearToken } from '@/utils/auth'
+import { RoleType, UserState } from './types'
+import { setToken, clearSession } from '@/utils/auth'
 import { removeRouteListener } from '@/utils/route-listener'
 import { getLoginData } from '@/api/login'
 
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
     name: undefined,
-    role: '',
+    role: '*',
     isLogin: false
   }),
 
@@ -27,16 +27,22 @@ const useUserStore = defineStore('user', {
       return this.isLogin
     },
 
-    async login(data: FormData) {
-      const res = await getLoginData(data)
+    setIsLogin(islogin: boolean) {
+      this.isLogin = islogin
+    },
+
+    setRole(role: RoleType) {
+      this.role = role
+    },
+
+    async login(prama: FormData) {
+      const res = await getLoginData(prama)
+      this.role = res.data.data.role
+      this.name = res.data.data.name
+      sessionStorage.setItem('ROLE', res.data.data.role)
       setToken('USER')
       this.isLogin = true
       return res
-    },
-    
-    // Set user's information
-    setInfo(partial: Partial<UserState>) {
-      this.$patch(partial)
     },
 
     // Reset user's information
@@ -47,7 +53,7 @@ const useUserStore = defineStore('user', {
     logout() {
       this.isLogin = false
       this.resetInfo()
-      clearToken()
+      clearSession()
       removeRouteListener()
     }
   },

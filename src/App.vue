@@ -5,14 +5,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import enUS from '@arco-design/web-vue/es/locale/lang/en-us'
 import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn'
 import useLocale from '@/hooks/locale'
+import { useUserStore } from '@/store'
+import { RoleType } from './store/modules/user/types'
 
-if (performance.navigation.type !== 1) {
-  localStorage.clear()
-}
+onMounted(() => {
+  const { setIsLogin, setRole } = useUserStore()
+
+  if (sessionStorage.getItem('TOKEN')) {
+    console.log('onMounted')
+    setIsLogin(true)
+    setRole(sessionStorage.getItem('ROLE') as RoleType)
+  }
+})
+
 const { currentLocale } = useLocale()
 document.body.removeAttribute('arco-theme')
 const locale = computed(() => {

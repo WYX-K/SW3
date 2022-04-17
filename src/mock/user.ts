@@ -15,7 +15,6 @@ setupMock({
       const password = value.get('pwd')
 
       if (username === 'simon' && password === 'simon') {
-        window.localStorage.setItem('userRole', 'user')
         return successResponseWrap({
           name: '王立群',
           role: 'user',
