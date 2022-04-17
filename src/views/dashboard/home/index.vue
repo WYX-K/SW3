@@ -2,6 +2,7 @@
   <div class="container">
     <div class="left-side">
       <div class="panel">
+        <Banner></Banner>
       </div>
       <a-grid
         :cols="24"
@@ -37,6 +38,7 @@
 </template>
 
 <script lang="ts" setup>
+import Banner from './components/banner.vue'
 </script>
 
 <script lang="ts">

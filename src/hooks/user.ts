@@ -1,7 +1,6 @@
 import { Router } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import consola from 'consola'
-import { LoginData } from '@/api/login'
 import { useUserStore } from '@/store'
 
 export default function useUser() {

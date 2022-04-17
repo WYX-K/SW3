@@ -2,8 +2,7 @@
   <div class="container">
     <div class="logo">
       <img
-        alt="logo"
-        src="/public/image/logo.png"
+        src="/image/logo.png"
       />
     </div>
     <LoginBanner />
