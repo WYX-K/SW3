@@ -5,7 +5,7 @@ export default {
   meta: {
     locale: 'menu.poster',
     requiresAuth: true,
-    icon: 'icon-home',
+    icon: 'icon-camera',
     order: 0,
   },
   children: [

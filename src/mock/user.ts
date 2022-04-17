@@ -16,7 +16,7 @@ setupMock({
 
       if (username === 'simon' && password === 'simon') {
         return successResponseWrap({
-          name: '王立群',
+          name: 'Simon',
           role: 'user',
         })
       }

@@ -16,7 +16,7 @@ export default {
       meta: {
         locale: 'menu.home.intro',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['*']
       },
     },
   ],

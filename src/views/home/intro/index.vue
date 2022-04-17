@@ -24,9 +24,11 @@
       <a-grid :cols="24" :row-gap="16">
         <a-grid-item :span="24">
           <div class="panel moduler-wrap">
+            <!-- <QuickOperation></QuickOperation> -->
           </div>
         </a-grid-item>
         <a-grid-item class="panel" :span="24">
+          <Carousel />
         </a-grid-item>
         <a-grid-item class="panel" :span="24">
         </a-grid-item>
@@ -38,7 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-import Content from './components/content.vue'
+import Content from './components/banner.vue'
+import Carousel from './components/carousel.vue'
+import QuickOperation from './components/quick-operation.vue'
 </script>
 
 <script lang="ts">

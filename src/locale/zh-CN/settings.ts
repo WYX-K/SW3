@@ -1,6 +1,4 @@
-/* eslint-disable max-len */
 export default {
-  'settings.search': '搜索',
   'settings.language': '语言',
   'settings.navbar': '导航栏',
   'settings.navbar.theme.toLight': '点击切换为亮色模式',

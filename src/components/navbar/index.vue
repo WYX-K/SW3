@@ -17,13 +17,14 @@
     </div>
     <ul class="right-side">
       <li>
-        <a-tooltip :content="t('settings.search')">
-          <a-button class="nav-btn" type="outline" :shape="'circle'">
-            <template #icon>
-              <icon-search />
-            </template>
-          </a-button>
-        </a-tooltip>
+        <a-input-search
+          :style="{width:'320px'}"
+          :loading="isLoading"
+          placeholder="Please enter"
+          allow-clear
+          @change="onSearch"
+          @search="onSearch"
+        />
       </li>
       <li>
         <a-tooltip :content="t('settings.language')">
@@ -106,6 +107,11 @@ import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
 import { useAppStore } from '@/store'
 
+const isLoading = ref(false)
+const onSearch = (value: string) => {
+  console.log(value)
+}
+
 const triggerBtn = ref()
 const { changeLocale } = useLocale()
 const locales = [...LOCALE_OPTIONS]
@@ -118,8 +124,8 @@ const setDropDownVisible = () => {
   })
   triggerBtn.value.dispatchEvent(event)
 }
-const appStore = useAppStore()
 
+const appStore = useAppStore()
 const isDark = useDark({
   selector: 'body',
   attribute: 'arco-theme',
@@ -131,7 +137,6 @@ const isDark = useDark({
     appStore.toggleTheme(dark)
   },
 })
-
 const toggleTheme = useToggle(isDark)
 const router = useRouter()
 const theme = computed(() => appStore.theme)
@@ -139,6 +144,7 @@ const { logout } = useUser()
 const handleLogout = () => {
   logout(router, t)
 }
+
 </script>
 
 <style scoped lang="less">
