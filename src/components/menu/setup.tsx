@@ -109,7 +109,7 @@ setup() {
                 >
                   {element?.children?.map((elem) => {
                     return (
-                      <a-menu-item key={elem.name} onClick={() => goto(elem)}>
+                      <a-menu-item key={elem.path} onClick={() => goto(elem)}>
                         {t(elem?.meta?.locale || '')}
                         {travel(elem.children ?? [])}
                       </a-menu-item>
@@ -128,7 +128,6 @@ setup() {
         <a-menu
           v-model:collapsed={collapsed.value}
           show-collapse-button={true}
-          auto-open={false}
           selected-keys={selectedKey.value}
           auto-open-selected={true}
           level-indent={34}

@@ -20,7 +20,7 @@ export default function useUser() {
       if (res.status) {
         consola.success(res)
         router.push({
-          name: 'home',
+          name: 'intro',
         })
         Message.success(t('login.form.login.success'))
       } else {
