@@ -77,7 +77,7 @@
             :size="32"
             :style="{ marginRight: '8px', cursor: 'pointer' }"
           >
-            <!-- <img alt="avatar" src="000" /> -->
+            <img alt="avatar" src="@/assets/image/avatar_user.jpg" />
           </a-avatar>
           <template #content>
             <a-doption>

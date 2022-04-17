@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { UserState } from './types'
 import { setToken, clearToken } from '@/utils/auth'
 import { removeRouteListener } from '@/utils/route-listener'
-import { getLoginData, LoginData } from '@/api/login'
+import { getLoginData } from '@/api/login'
 
 const useUserStore = defineStore('user', {
   state: (): UserState => ({

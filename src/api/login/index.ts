@@ -10,5 +10,6 @@ export interface LoginRes {
 }
 
 export function getLoginData(data: FormData) {
-  return axios.post<LoginRes>('/api/login', data)
+  // return axios.post<LoginRes>('/api/login', data)
+  return axios.post<LoginRes>('/mock/login', data)
 }

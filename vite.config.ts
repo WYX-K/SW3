@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import { createStyleImportPlugin } from 'vite-plugin-style-import'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { viteMockServe } from 'vite-plugin-mock'
 
 export default defineConfig({
   plugins: [
@@ -20,7 +21,8 @@ export default defineConfig({
           }
         }
       ]
-    })
+    }),
+    viteMockServe({ supportTs: false })
   ],
   server: {
     // 反向代理
@@ -28,6 +30,11 @@ export default defineConfig({
       '/api': {
         target: 'https://cms-1591686-1309449446.ap-shanghai.run.tcloudbase.com', // 代理的地址
         changeOrigin: true,
+      },
+      '/api/mock': {
+        target: 'http://localhost:8080/', // 对mock进行代理，为了区别非mock的代理
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },
