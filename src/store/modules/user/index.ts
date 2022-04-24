@@ -7,7 +7,7 @@ import { getLoginData } from '@/api/login'
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
     name: undefined,
-    role: '*',
+    role: 'uicer',
     isLogin: false
   }),
 

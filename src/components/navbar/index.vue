@@ -22,6 +22,7 @@
           :loading="isLoading"
           placeholder="Please enter"
           allow-clear
+          v-if="isSearchShow"
           @change="onSearch"
           @search="onSearch"
         />
@@ -101,13 +102,23 @@
 import { ref, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n/index'
-import { useRouter } from 'vue-router'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
 import { useAppStore } from '@/store'
+import { useRouter } from 'vue-router'
+import { listenerRouteChange } from '@/utils/route-listener';
 
 const isLoading = ref(false)
+const isSearchShow = ref(false)
+listenerRouteChange((newRoute) => {
+  if(newRoute.name === 'show&vote'){
+    isSearchShow.value = true
+  } else {
+    isSearchShow.value = false
+  }
+}, true)
+
 const onSearch = (value: string) => {
   console.log(value)
 }
@@ -137,8 +148,9 @@ const isDark = useDark({
     appStore.toggleTheme(dark)
   },
 })
-const toggleTheme = useToggle(isDark)
+
 const router = useRouter()
+const toggleTheme = useToggle(isDark)
 const theme = computed(() => appStore.theme)
 const { logout } = useUser()
 const handleLogout = () => {

@@ -50,7 +50,6 @@ import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
 
 const { t } = useI18n()
-
 const columns = [
   {
     title: t('poster.table.title'),
