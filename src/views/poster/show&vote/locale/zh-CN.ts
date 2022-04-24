@@ -9,4 +9,8 @@ export default {
   'poster.table.image': '海报',
   'poster.table.action': '操作',
   'poster.imageBtn.title': '查看',
+  'poster.table.title': '标题',
+  'poster.table.author': '作者',
+  'poster.table.major': '专业',
+  'poster.table.summary': '摘要',
 }

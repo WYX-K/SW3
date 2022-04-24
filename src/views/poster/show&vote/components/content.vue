@@ -4,15 +4,16 @@
       :columns="columns"
       :data="data"
       :pagination="pagination"
+      :filter-icon-align-left="true"
       @page-change="handlePageChange"
     >
-      <template #name-filter="{ filterValue, setFilterValue, handleFilterConfirm, handleFilterReset}">
+      <template #filter="{ filterValue, setFilterValue, handleFilterConfirm, handleFilterReset}">
         <div class="custom-filter">
           <a-space direction="vertical">
-            <a-input :model-value="filterValue[0]" @input="(value:string)=>setFilterValue([value])" />
+            <a-input :model-value="filterValue[0]" @input="(value: string)=>setFilterValue([value])" />
             <div class="custom-filter-footer">
-              <a-button @click="handleFilterConfirm">{{ t('poster.filter.confirm') }}</a-button>
-              <a-button @click="handleFilterReset">{{ t('poster.filter.cancel') }}</a-button>
+              <a-button @click="handleFilterConfirm">Confirm</a-button>
+              <a-button @click="handleFilterReset">Reset</a-button>
             </div>
           </a-space>
         </div>
@@ -41,29 +42,51 @@ const { t } = useI18n()
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: t('poster.table.title'),
+    dataIndex: 'title',
     filterable: {
-      filter: (value: any, record: { name: string | any[]; }) => record.name.includes(value),
-      slotName: 'name-filter',
+      filter: (value: string, record: { title: string | any[]; }) => record.title.includes(value),
       icon: () => h(IconSearch),
-      alignLeft: true
-    }
-  },
-  {
-    title: 'Salary',
-    dataIndex: 'salary',
-    sortable: {
-      sortDirections: ['ascend']
+      slotName: 'filter',
     },
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
+    title: t('poster.table.major'),
+    dataIndex: 'major',
+    filterable: {
+      filters: [{
+        text: 'CST',
+        value: 'CST',
+      }, {
+        text: 'DS',
+        value: 'DS',
+      }, {
+        text: 'STAT',
+        value: 'STAT',
+      }, {
+        text: 'ENVS',
+        value: 'ENVS',
+      }, {
+        text: 'FM',
+        value: 'FM',
+      }],
+      filter: (value:string, row: any) => row.major.includes(value),
+      multiple: true,
+    }
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
+    title: t('poster.table.author'),
+    dataIndex: 'author',
+    filterable: {
+      filter: (value: any, record: { author: string | any[]; }) => record.author.includes(value),
+      icon: () => h(IconSearch),
+      alignLeft: true,
+      slotName: 'filter',
+    },
+  },
+  {
+    title: t('poster.table.summary'),
+    dataIndex: 'summary',
   },
   {
     title: t('poster.table.image'),
@@ -75,111 +98,7 @@ const columns = [
     fixed: 'right',
   }
 ]
-const data = reactive([{
-  key: '1',
-  name: 'Jane Doe',
-  salary: 23000,
-  address: '32 Park Road, London',
-  email: 'jane.doe@example.com'
-},
-{
-  key: '2',
-  name: 'Alisa Ross',
-  salary: 25000,
-  address: '35 Park Road, London',
-  email: 'alisa.ross@example.com'
-},
-{
-  key: '3',
-  name: 'Kevin Sandra',
-  salary: 22000,
-  address: '31 Park Road, London',
-  email: 'kevin.sandra@example.com'
-},
-{
-  key: '4',
-  name: 'Ed Hellen',
-  salary: 17000,
-  address: '42 Park Road, London',
-  email: 'ed.hellen@example.com'
-},
-{
-  key: '5',
-  name: 'William Smith',
-  salary: 27000,
-  address: '62 Park Road, London',
-  email: 'william.smith@example.com'
-},
-{
-  key: '1',
-  name: 'Jane Doe',
-  salary: 23000,
-  address: '32 Park Road, London',
-  email: 'jane.doe@example.com'
-},
-{
-  key: '2',
-  name: 'Alisa Ross',
-  salary: 25000,
-  address: '35 Park Road, London',
-  email: 'alisa.ross@example.com'
-},
-{
-  key: '3',
-  name: 'Kevin Sandra',
-  salary: 22000,
-  address: '31 Park Road, London',
-  email: 'kevin.sandra@example.com'
-},
-{
-  key: '4',
-  name: 'Ed Hellen',
-  salary: 17000,
-  address: '42 Park Road, London',
-  email: 'ed.hellen@example.com'
-},
-{
-  key: '5',
-  name: 'William Smith',
-  salary: 27000,
-  address: '62 Park Road, London',
-  email: 'william.smith@example.com'
-},
-{
-  key: '1',
-  name: 'Jane Doe',
-  salary: 23000,
-  address: '32 Park Road, London',
-  email: 'jane.doe@example.com'
-},
-{
-  key: '2',
-  name: 'Alisa Ross',
-  salary: 25000,
-  address: '35 Park Road, London',
-  email: 'alisa.ross@example.com'
-},
-{
-  key: '3',
-  name: 'Kevin Sandra',
-  salary: 22000,
-  address: '31 Park Road, London',
-  email: 'kevin.sandra@example.com'
-},
-{
-  key: '4',
-  name: 'Ed Hellen',
-  salary: 17000,
-  address: '42 Park Road, London',
-  email: 'ed.hellen@example.com'
-},
-{
-  key: '5',
-  name: 'William Smith',
-  salary: 27000,
-  address: '62 Park Road, London',
-  email: 'william.smith@example.com'
-},
+const data = reactive([
 ])
 
 const visible = ref(false)
