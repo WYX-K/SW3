@@ -1,5 +1,13 @@
 <template>
   <a-col class="banner">
+    <a-typography-title v-show="isVoted" style="margin-top: 0">
+      <a-tag size="large" color="green">
+        <template #icon>
+          <icon-check-circle-fill />
+        </template>
+        {{ t('poster.voted.tip') }}{{ votedItem }}
+      </a-tag>
+    </a-typography-title>
     <a-table
       :columns="columns"
       :data="data"
@@ -18,8 +26,11 @@
           </a-space>
         </div>
       </template>
+      <template #summary="{ record }">
+        <a-button @click="Modal.info({ title:t('poster.table.summary'), content:record.summary })">{{ t('poster.imageBtn.title') }}</a-button>
+      </template>
       <template #image="{ record }">
-        <a-button @click="onShowImg(record.id)">{{ t('poster.imageBtn.title') }}</a-button>
+        <a-button @click="onShowImg(record)">{{ t('poster.imageBtn.title') }}</a-button>
       </template>
       <template #action="{ record }">
         <a-button type="outline" status="success" @click="onVote(record.url)">{{ t('poster.actionBtn.title') }}</a-button>
@@ -107,14 +118,17 @@ const onShowImg = (url: string) => {
   imgurl.value = url
   visible.value = true
 }
-const onVote = (id: number) => {
+
+const votedItem = reactive({})
+const isVoted = ref(false)
+const onVote = (item: object) => {
   Modal.confirm({
     title: t('poster.sureVote.title'),
     content: t('poster.sureVote.content'),
-    okText: t('poster.sureVote.okText'),
-    cancelText: t('poster.sureVote.cancelText'),
+    okText: t('poster.filter.confirm'),
+    cancelText: t('poster.filter.cancel'),
     onOk: () => {
-      console.log(id)
+      isVoted.value = true
     },
     onCancel: () => {
       console.log('cancel')
@@ -132,6 +146,7 @@ const handlePageChange = (page: number) => {
   console.log(page)
   pagination.current = page
 }
+
 </script>
 
 <style scoped lang="less">
