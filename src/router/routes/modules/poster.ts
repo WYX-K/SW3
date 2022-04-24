@@ -10,14 +10,14 @@ export default {
   },
   children: [
     {
-      path: 'show',
-      name: 'show',
-      component: () => import('@/views/poster/show/index.vue'),
+      path: 'show&vote',
+      name: 'show&vote',
+      component: () => import('@/views/poster/show&vote/index.vue'),
       meta: {
         locale: 'menu.poster.show',
         requiresAuth: true,
-        roles: ['user'],
+        roles: ['uicer'],
       },
-    },
+    }
   ],
 }

@@ -17,10 +17,10 @@ setupMock({
       if (username === 'simon' && password === 'simon') {
         return successResponseWrap({
           name: 'Simon',
-          role: 'user',
+          role: 'uicer', // 类型有 'admin' | 'uicer' | 'dean' | 'judge'| 'head_judge' | 'con_coor'
         })
       }
-      return failResponseWrap(null, '账号或者密码错误', 500)
+      return failResponseWrap(null, '账号或者密码错误', 404)
     })
   },
 })

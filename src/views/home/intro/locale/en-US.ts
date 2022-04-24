@@ -1,3 +1,3 @@
 export default {
-  'home.welcome': 'Welcome!'
+  'home.welcome': 'Welcome!',
 }
