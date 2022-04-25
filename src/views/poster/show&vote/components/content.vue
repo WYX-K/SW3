@@ -3,6 +3,7 @@
     <a-typography-title :heading="5" style="margin-top: 0">
       {{ t('poster.vote.welcome') }}
     </a-typography-title>
+    <a-divider class="panel-border" />
     <a-table
       :columns="columns"
       :data="data"
@@ -25,12 +26,13 @@
         <a-button @click="Modal.info({ title:t('poster.table.summary'), content:record.summary })">{{ t('poster.imageBtn.title') }}</a-button>
       </template>
       <template #image="{ record }">
-        <a-button @click="onShowImg(record)">{{ t('poster.imageBtn.title') }}</a-button>
+        <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
       </template>
       <template #action="{ record }">
-        <a-button type="outline" status="success" @click="onVote(record.url)">{{ t('poster.actionBtn.title') }}</a-button>
+        <a-button type="outline" status="success" @click="onVote(record)">{{ t('poster.actionBtn.title') }}</a-button>
       </template>
     </a-table>
+    <a-divider class="panel-border" />
     <a-tag size="large" color="green">
       <template #icon>
         <icon-check-circle-fill />

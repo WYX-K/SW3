@@ -18,11 +18,11 @@
     <ul class="right-side">
       <li>
         <a-input-search
+          v-if="isSearchShow"
           :style="{width:'320px'}"
           :loading="isLoading"
           :placeholder="t('navbar.search.placeholder')"
           allow-clear
-          v-if="isSearchShow"
           @change="onSearch"
           @search="onSearch"
         />
@@ -102,17 +102,17 @@
 import { ref, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n/index'
+import { useRouter } from 'vue-router'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
 import { useAppStore } from '@/store'
-import { useRouter } from 'vue-router'
-import { listenerRouteChange } from '@/utils/route-listener';
+import { listenerRouteChange } from '@/utils/route-listener'
 
 const isLoading = ref(false)
 const isSearchShow = ref(false)
 listenerRouteChange((newRoute) => {
-  if(newRoute.name === 'show&vote'){
+  if (newRoute.name === 'show&vote' || newRoute.name === 'edit') {
     isSearchShow.value = true
   } else {
     isSearchShow.value = false

@@ -38,7 +38,7 @@ export default {
     min-height: 83vh;
   }
   :deep(.panel-border) {
-    margin-bottom: 0;
+    margin-bottom: 2%;
     border-bottom: 1px solid rgb(var(--gray-2));
   }
 </style>

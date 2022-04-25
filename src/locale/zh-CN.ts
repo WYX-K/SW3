@@ -3,6 +3,7 @@ import localeSettings from './zh-CN/settings'
 import localeHome from '@/views/home/intro/locale/zh-CN'
 import localePosterVote from '@/views/poster/show&vote/locale/zh-CN'
 import localePosterUpload from '@/views/poster/upload/locale/zh-CN'
+import localePosterEdit from '@/views/poster/edit/locale/zh-CN'
 
 export default {
   'menu.home': '主页',
@@ -17,5 +18,6 @@ export default {
   ...localeLogin,
   ...localeHome,
   ...localePosterVote,
-  ...localePosterUpload
+  ...localePosterUpload,
+  ...localePosterEdit,
 }

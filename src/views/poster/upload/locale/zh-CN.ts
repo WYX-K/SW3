@@ -1,5 +1,5 @@
 export default {
-  'poster.upload.welcome': '上传海报',
+  'poster.upload.welcome': '海报上传',
   'upload.title.tip': '请输入海报标题',
   'upload.title.label': '海报标题：',
   'upload.author.tip': '请输入作者',

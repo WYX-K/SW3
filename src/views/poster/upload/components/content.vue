@@ -62,7 +62,6 @@
           list-type="picture-card"
           action="/"
           :limit="1"
-          draggable
           accept="image/*"
           image-preview
         />

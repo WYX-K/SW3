@@ -26,7 +26,7 @@ export default {
       meta: {
         locale: 'menu.poster.upload',
         requiresAuth: true,
-        roles: ['admin','con_coor'],
+        roles: ['con_coor'],
       },
     },
     {
@@ -36,7 +36,7 @@ export default {
       meta: {
         locale: 'menu.poster.edit',
         requiresAuth: true,
-        roles: ['admin','con_coor'],
+        roles: ['admin', 'con_coor'],
       },
     }
   ],
