@@ -75,6 +75,14 @@
         </a-tooltip>
       </li>
       <li>
+        <a-tag color="purple">
+          <template #icon>
+            <icon-star />
+          </template>
+          {{ role }}
+        </a-tag>
+      </li>
+      <li>
         <a-dropdown trigger="click">
           <a-avatar
             :size="32"
@@ -106,8 +114,16 @@ import { useRouter } from 'vue-router'
 import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
-import { useAppStore } from '@/store'
+import { useAppStore, useUserStore } from '@/store'
 import { listenerRouteChange } from '@/utils/route-listener'
+
+const role = computed(() => {
+  const { getRole } = useUserStore()
+  if (getRole() === 'con_coor') {
+    return 'Coordinator'
+  }
+  return getRole()
+})
 
 const isLoading = ref(false)
 const isSearchShow = ref(false)

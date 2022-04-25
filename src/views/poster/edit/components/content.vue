@@ -5,10 +5,12 @@
     </a-typography-title>
     <a-divider class="panel-border" />
     <a-table
+      v-model:selectedKeys="selectedKeys"
       :columns="columns"
-      :data="data"
-      :pagination="pagination"	
+      :data="data"	
+      :pagination="pagination"
       :filter-icon-align-left="true"
+      :row-selection="rowSelection"
       @page-change="handlePageChange"
     >
       <template #filter="{ filterValue, setFilterValue, handleFilterConfirm, handleFilterReset}">
@@ -32,6 +34,8 @@
         <a-button type="outline" status="success" @click="onEdit(record)">{{ t('poster.editBtn.title') }}</a-button>
       </template>
     </a-table>
+    <a-divider class="panel-border" />
+    <a-button v-show="isBtnShow" style="position:absolute; right:5%" type="primary">{{ t('poster.delete') }}</a-button>
   </a-col>
   <a-image-preview
     v-model:visible="visible"
@@ -117,13 +121,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, h } from 'vue'
+import { ref, reactive, h, computed } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
 
 const { t } = useI18n()
+
+const selectedKeys = ref([])
+const isBtnShow = computed(() => selectedKeys.value.length > 0)
+
+const rowSelection = {
+  type: 'checkbox',
+  showCheckedAll: true
+}
+
 const columns = [
   {
     title: t('poster.table.title'),
