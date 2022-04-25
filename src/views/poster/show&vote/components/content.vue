@@ -1,17 +1,12 @@
 <template>
   <a-col class="banner">
-    <a-typography-title v-show="isVoted" style="margin-top: 0">
-      <a-tag size="large" color="green">
-        <template #icon>
-          <icon-check-circle-fill />
-        </template>
-        {{ t('poster.voted.tip') }}{{ votedItem }}
-      </a-tag>
+    <a-typography-title :heading="5" style="margin-top: 0">
+      {{ t('poster.vote.welcome') }}
     </a-typography-title>
     <a-table
       :columns="columns"
       :data="data"
-      :pagination="pagination"
+      :pagination="pagination"	
       :filter-icon-align-left="true"
       @page-change="handlePageChange"
     >
@@ -36,6 +31,12 @@
         <a-button type="outline" status="success" @click="onVote(record.url)">{{ t('poster.actionBtn.title') }}</a-button>
       </template>
     </a-table>
+    <a-tag size="large" color="green">
+      <template #icon>
+        <icon-check-circle-fill />
+      </template>
+      {{ t('poster.voted.tip') }}{{ votedItem }}
+    </a-tag>
   </a-col>
   <a-image-preview
     v-model:visible="visible"
@@ -79,6 +80,9 @@ const columns = [
       }, {
         text: 'FM',
         value: 'FM',
+      }, {
+        text: 'APSY',
+        value: 'APSY',
       }],
       filter: (value:string, row: any) => row.major.includes(value),
       multiple: true,
@@ -124,8 +128,8 @@ const onVote = (item: object) => {
   Modal.confirm({
     title: t('poster.sureVote.title'),
     content: t('poster.sureVote.content'),
-    okText: t('poster.filter.confirm'),
-    cancelText: t('poster.filter.cancel'),
+    okText: t('poster.modal.confirm'),
+    cancelText: t('poster.modal.cancel'),
     onOk: () => {
       isVoted.value = true
     },

@@ -28,6 +28,16 @@ export default {
         requiresAuth: true,
         roles: ['admin','con_coor'],
       },
+    },
+    {
+      path: 'edit',
+      name: 'edit',
+      component: () => import('@/views/poster/edit/index.vue'),
+      meta: {
+        locale: 'menu.poster.edit',
+        requiresAuth: true,
+        roles: ['admin','con_coor'],
+      },
     }
   ],
 }
