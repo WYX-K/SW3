@@ -9,6 +9,8 @@ export default {
   'navbar.action.locale': 'Switch to English',
   'menu.poster': 'Poster',
   'menu.poster.show': 'Show & Vote',
+  'menu.poster.upload': 'Upload',	
+  'navbar.search.placeholder': 'Please enter the keyword',
   ...localeSettings,
   ...localeLogin,
   ...localeHome,

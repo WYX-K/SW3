@@ -20,7 +20,7 @@
         <a-input-search
           :style="{width:'320px'}"
           :loading="isLoading"
-          placeholder="Please enter"
+          :placeholder="t('navbar.search.placeholder')"
           allow-clear
           v-if="isSearchShow"
           @change="onSearch"

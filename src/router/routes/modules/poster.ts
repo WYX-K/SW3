@@ -18,6 +18,16 @@ export default {
         requiresAuth: true,
         roles: ['uicer'],
       },
+    },
+    {
+      path: 'upload',
+      name: 'upload',
+      component: () => import('@/views/poster/upload/index.vue'),
+      meta: {
+        locale: 'menu.poster.upload',
+        requiresAuth: true,
+        roles: ['admin','con_coor'],
+      },
     }
   ],
 }

@@ -1,0 +1,16 @@
+export default {
+  'poster.sureVote.title': '提示',
+  'poster.sureVote.content': '确认投票吗？',
+  'poster.filter.confirm': '确认',
+  'poster.filter.cancel': '取消',
+  'poster.actionBtn.title': '投票',
+  'poster.table.image': '海报',
+  'poster.table.action': '操作',
+  'poster.imageBtn.title': '查看',
+  'poster.table.title': '标题',
+  'poster.table.author': '作者',
+  'poster.table.major': '专业',
+  'poster.table.summary': '摘要',
+  'welcome.vote': '欢迎投票',
+  'poster.voted.tip': '目前投票的海报为：',
+}
