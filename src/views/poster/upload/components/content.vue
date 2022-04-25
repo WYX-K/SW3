@@ -55,6 +55,7 @@
       </a-form-item>
       <a-form-item 
         field="upload" 
+        :rules="[{required:true, message:t('upload.image.tip')}]"
       >
         <a-upload
           v-model:file-list="form.fileList"
@@ -92,7 +93,7 @@ const form = reactive({
   fileList: [],
 })
 const uploadPosterInfo = async (form: any) => {
-  consola.success(form.fileList[0])
+  consola.success(form)
 }
 const handleSubmit = (e: any) => {
   if (typeof (e.errors) === 'undefined') {

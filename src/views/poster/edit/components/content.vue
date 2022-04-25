@@ -16,8 +16,8 @@
           <a-space direction="vertical">
             <a-input :model-value="filterValue[0]" @input="(value: string)=>setFilterValue([value])" />
             <div class="custom-filter-footer">
-              <a-button @click="handleFilterConfirm">Confirm</a-button>
-              <a-button @click="handleFilterReset">Reset</a-button>
+              <a-button @click="handleFilterConfirm">{{ t('poster.filter.confirm') }}</a-button>
+              <a-button @click="handleFilterReset">{{ t('poster.filter.reset') }}</a-button>
             </div>
           </a-space>
         </div>
@@ -39,15 +39,16 @@
   />
   <a-modal
     v-model:visible="isShowModel"
-    title="Modal Form"
-    @cancel="handleCancel"
-    @before-ok="handleBeforeOk"
+    :title="t('edit.modal.title')"
+    unmount-on-close
+    :footer="false"
   >
     <a-form
       ref="formRef"
       size="middle"
       :model="form"
       :style="{width:'480px'}"
+      @submit="handleSubmit"
     >
       <a-form-item
         field="title"
@@ -93,6 +94,7 @@
       </a-form-item>
       <a-form-item 
         field="upload" 
+        :rules="[{required:true, message:t('upload.image.tip')}]"
       >
         <a-upload
           v-model:file-list="form.fileList"
@@ -104,6 +106,12 @@
           image-preview
         />
       </a-form-item>
+      <a-form-item>
+        <a-space>
+          <a-button type="primary" html-type="submit">{{ t('poster.upload.submit') }}</a-button>
+          <a-button @click="$refs.formRef.resetFields()">{{ t('poster.upload.reset') }}</a-button>
+        </a-space>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -113,6 +121,7 @@ import { ref, reactive, h } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
+import consola from 'consola'
 
 const { t } = useI18n()
 const columns = [
@@ -186,9 +195,9 @@ const onShowImg = (url: string) => {
   visible.value = true
 }
 
-const votedItem = reactive({})
-const isShowModel = ref(true)
+const isShowModel = ref(false)
 const form = reactive({
+  id: '',	
   title: '',
   author: '',
   major: '',
@@ -198,18 +207,27 @@ const form = reactive({
 const onEdit = (item: object) => {
   isShowModel.value = true
 }
-const handleCancel = () => {
-  visible.value = false
+const uploadPosterInfo = async (form: any) => {
+  consola.success(form)
 }
-const handleBeforeOk = (done: any) => {
-  console.log(form)
-  window.setTimeout(() => {
-    done()
-    // prevent close
-    // done(false)
-  }, 3000)
+const handleSubmit = (e: any) => {
+  if (typeof (e.errors) === 'undefined') {
+    Modal.confirm({
+      title: t('upload.modal.title'),
+      content: t('upload.modal.content'),
+      okText: t('poster.modal.confirm'),
+      cancelText: t('poster.modal.cancel'),
+      onOk: () => {
+        uploadPosterInfo(e.values)
+        form.title = ''
+        form.author = ''
+        form.major = ''
+        form.summary = ''
+        form.fileList = []
+      }
+    })
+  }
 }
-
 const pagination = reactive({
   pageSize: 10,
   current: 1,

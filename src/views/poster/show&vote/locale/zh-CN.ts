@@ -14,4 +14,6 @@ export default {
   'welcome.vote': '欢迎投票',
   'poster.voted.tip': '目前投票的海报为：',
   'poster.vote.welcome': '欢迎投票',
+  'poster.filter.reset': '重置',
+  'poster.filter.confirm': '确认',
 }

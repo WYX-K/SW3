@@ -12,4 +12,5 @@ export default {
   'upload.modal.content': '确认上传海报',
   'poster.upload.submit': '上传',
   'poster.upload.reset': '重置',
+  'upload.image.tip': '请上传海报图片',
 }

@@ -16,8 +16,8 @@
           <a-space direction="vertical">
             <a-input :model-value="filterValue[0]" @input="(value: string)=>setFilterValue([value])" />
             <div class="custom-filter-footer">
-              <a-button @click="handleFilterConfirm">Confirm</a-button>
-              <a-button @click="handleFilterReset">Reset</a-button>
+              <a-button @click="handleFilterConfirm">{{ t('poster.filter.confirm') }}</a-button>
+              <a-button @click="handleFilterReset">{{ t('poster.filter.reset') }}</a-button>
             </div>
           </a-space>
         </div>
