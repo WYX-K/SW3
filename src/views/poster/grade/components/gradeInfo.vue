@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { reactive, onActivated, computed } from 'vue'
 import { useI18n } from 'vue-i18n/index'
-import { useGradeStore } from '@/store'
+import { useGradeStore, useUserStore } from '@/store'
 
 const { t } = useI18n()
 
@@ -127,6 +127,23 @@ onActivated(() => {
 const handleSubmit = () => {
   console.log(formdata.value)
 }
+
+const userStore = useUserStore()
+const judgeGrade = () => {
+  console.log(userStore.getRole())
+}
+const deanGrade = () => {
+  console.log(userStore.getRole())
+}
+switch (userStore.getRole()) {
+  case 'judge':
+    judgeGrade()
+    break
+  case 'dean':
+    deanGrade()
+    break
+}
+
 </script>
 
 <style lang="less" scoped>
