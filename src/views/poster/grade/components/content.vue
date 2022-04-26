@@ -44,7 +44,7 @@ import { ref, reactive, h } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
-import mitt from 'mitt'
+import { useGradeStore } from '@/store'
 
 const { t } = useI18n()
 
@@ -126,10 +126,10 @@ const onShowImg = (url: string) => {
   visible.value = true
 }
 const emits = defineEmits(['onClick'])
+const gradeStore = useGradeStore()
 const onGrade = (record: any) => {
   emits('onClick', true)
-  const emitter = mitt()
-  emitter.emit('getRecord', record)
+  gradeStore.setRecord(record)
 }
 const pagination = reactive({
   pageSize: 10,

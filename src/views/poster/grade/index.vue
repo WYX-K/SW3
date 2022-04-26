@@ -23,6 +23,11 @@ const onGradeClick = (isClick: boolean) => {
     // @ts-ignore
     curComponent.value = Content2 
     sessionStorage.setItem('CC', 'C2')
+  } else {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    curComponent.value = Content1
+    sessionStorage.setItem('CC', 'C1')
   }
 }
 if (sessionStorage.getItem('CC') === 'C2') {
