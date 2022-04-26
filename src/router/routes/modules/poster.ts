@@ -46,7 +46,7 @@ export default {
       meta: {
         locale: 'menu.poster.grade',
         requiresAuth: true,
-        roles: ['judge', 'dean'],
+        roles: ['judge', 'head_judge'],
       },
     }
   ],

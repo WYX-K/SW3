@@ -1,7 +1,7 @@
 export default {
   path: 'home',
   name: 'home',
-  component: () => import('@/views/poster/index.vue'),
+  component: () => import('@/views/home/index.vue'),
   meta: {
     locale: 'menu.home',
     requiresAuth: true,
