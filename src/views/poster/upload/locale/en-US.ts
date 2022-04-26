@@ -1,3 +1,16 @@
 export default {
-  
+  'poster.upload.welcome': 'Upload poster',
+  'upload.title.tip': 'Input poster title',
+  'upload.title.label': 'Poster title:',
+  'upload.author.tip': 'Input author',
+  'upload.author.label': 'Author:',
+  'upload.major.tip': 'Choose major',
+  'upload.major.label': 'Major:',
+  'upload.summary.tip': 'Input poster summary',
+  'upload.summary.label': 'Poster summary:',
+  'upload.modal.title': 'Tip',
+  'upload.modal.content': 'Confirm upload poster',
+  'poster.upload.submit': 'Upload',
+  'poster.upload.reset': 'Reset',
+  'upload.image.tip': 'Upload poster image',
 }

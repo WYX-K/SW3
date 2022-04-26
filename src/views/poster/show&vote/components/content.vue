@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, h } from 'vue'
+import { ref, reactive, h, computed } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
@@ -55,7 +55,7 @@ import { useI18n } from 'vue-i18n/index'
 const { t } = useI18n()
 const columns = [
   {
-    title: t('poster.table.title'),
+    title: computed(() => t('poster.table.title')),
     dataIndex: 'title',
     filterable: {
       filter: (value: string, record: { title: string | any[]; }) => record.title.includes(value),
@@ -64,7 +64,7 @@ const columns = [
     },
   },
   {
-    title: t('poster.table.major'),
+    title: computed(() => t('poster.table.major')),
     dataIndex: 'major',
     filterable: {
       filters: [{
@@ -91,7 +91,7 @@ const columns = [
     }
   },
   {
-    title: t('poster.table.author'),
+    title: computed(() => t('poster.table.author')),
     dataIndex: 'author',
     filterable: {
       filter: (value: any, record: { author: string | any[]; }) => record.author.includes(value),
@@ -101,15 +101,15 @@ const columns = [
     },
   },
   {
-    title: t('poster.table.summary'),
+    title: computed(() => t('poster.table.summary')),
     slotName: 'summary',
   },
   {
-    title: t('poster.table.image'),
+    title: computed(() => t('poster.table.image')),
     slotName: 'image',
   },
   {
-    title: t('poster.table.action'),
+    title: computed(() => t('poster.table.action')),
     slotName: 'action',
     fixed: 'right',
   }

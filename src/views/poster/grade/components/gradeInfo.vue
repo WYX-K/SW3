@@ -1,6 +1,6 @@
 <template>
   <a-col class="banner">
-    <a-row justify="center">
+    <a-row justify="center" align="center">
       <a-col :span="8">
         <a-card hoverable :style="{ width: '300px', height: '580px' }">
           <template #cover>
@@ -27,73 +27,44 @@
         </a-card>
       </a-col>
       <a-col :span="12">
-        <a-row>
-          <a-form :model="form" :style="{width:'600px'}" @submit="handleSubmit">
-            <a-form-item field="visual_layout" :label="t('poster.grade.visual_layout')">
-              <a-slider 
-                v-model:model-value="form.visual_layout"	
-                :default-value="0" 
-                :style="{ width: '300px' }"
-                :step="0.1"
-                :max="5"
-                show-input
-              />
-            </a-form-item>
-            <a-form-item field="poster_organization" :label="t('poster.grade.poster_organization')">
-              <a-slider 
-                v-model:model-value="form.poster_organization"	
-                :default-value="0" 
-                :style="{ width: '300px' }"
-                :step="0.1"
-                :max="5"
-              />
-            </a-form-item>
-            <a-form-item field="poster_content" :label="t('poster.grade.poster_content')">
-              <a-slider 
-                v-model:model-value="form.poster_content"	
-                :default-value="0" 
-                :style="{ width: '300px' }"
-                :step="0.1"
-                :max="5"
-              />
-            </a-form-item>
-            <a-form-item field="written_language" :label="t('poster.grade.written_language')">
-              <a-slider 
-                v-model:model-value="form.written_language"	
-                :default-value="0" 
-                :style="{ width: '300px' }"
-                :step="0.1"
-                :max="5"
-              />
-            </a-form-item>
-            <a-form-item field="oral_presentation" :label="t('poster.grade.oral_presentation')">
-              <a-slider 
-                v-model:model-value="form.oral_presentation"	
-                :default-value="0" 
-                :style="{ width: '300px' }"
-                :step="0.1"
-                :max="5"
-              />
-            </a-form-item>
-            <a-form-item>
-              <a-space :size="180">
-                <a-button type="primary" html-type="submit" style="width:300%">
-                  {{ t('poster.grade.submit') }}
-                </a-button>
-                <a-button type="outline" @click="goBack">
-                  {{ t('poster.grade.goback') }}
-                </a-button>
-              </a-space>
-            </a-form-item>
-          </a-form>
-        </a-row>
+        <a-form
+          :model="formdata"
+          auto-label-width
+          @submit="handleSubmit"
+        >
+          <a-form-item
+            v-for="silder, index in silderdata"
+            :key="index"
+            :field="silder.field"
+            :label="silder.label"
+          >
+            <a-slider 
+              v-model:model-value="silder.data"	
+              :default-value="0" 
+              :style="{ width: '250px' }"
+              :step="0.1"
+              :max="5"
+            />
+            <a-tag color="arcoblue" style="margin-left:15px">{{ silder.data }}</a-tag>
+          </a-form-item>
+          <a-form-item>
+            <a-space :size="180">
+              <a-button type="primary" html-type="submit" style="width:300%">
+                {{ t('poster.grade.submit') }}
+              </a-button>
+              <a-button type="outline" @click="goBack">
+                {{ t('poster.grade.goback') }}
+              </a-button>
+            </a-space>
+          </a-form-item>
+        </a-form>
       </a-col>
     </a-row>
   </a-col>
 </template>
 
 <script setup lang="ts">
-import { reactive, onActivated } from 'vue'
+import { reactive, onActivated, computed } from 'vue'
 import { useI18n } from 'vue-i18n/index'
 import { useGradeStore } from '@/store'
 
@@ -112,21 +83,49 @@ const data = reactive({
     url: '',
   },
 })
+
+const silderdata = reactive([
+  {
+    field: 'visual_layout',
+    label: t('poster.grade.visual_layout'),
+    data: 0,
+  },
+  {
+    field: 'poster_organization',
+    label: t('poster.grade.poster_organization'),
+    data: 0,
+  },
+  {
+    field: 'poster_content',
+    label: t('poster.grade.poster_content'),
+    data: 0,
+  },
+  {
+    field: 'written_language',
+    label: t('poster.grade.written_language'),
+    data: 0,
+  },
+  {
+    field: 'oral_presentation',
+    label: t('poster.grade.oral_presentation'),
+    data: 0,
+  },
+])
+const formdata = computed(() => ({
+  visual_layout: silderdata[0].data,
+  poster_organization: silderdata[1].data,
+  poster_content: silderdata[2].data,
+  written_language: silderdata[3].data,
+  oral_presentation: silderdata[4].data,
+}))
 onActivated(() => {
   const gradeStore = useGradeStore()
   console.log(gradeStore.getRecord())
   data.record = gradeStore.getRecord()
 })
 
-const form = reactive({
-  visual_layout: 0,
-  poster_organization: 0,
-  poster_content: 0,
-  written_language: 0,
-  oral_presentation: 0,
-})
 const handleSubmit = () => {
-  
+  console.log(formdata.value)
 }
 </script>
 

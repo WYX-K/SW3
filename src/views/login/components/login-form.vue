@@ -25,6 +25,7 @@
       :model="userInfo"
       class="login-form"
       layout="vertical"
+      auto-label-width
       @submit="handleSubmit"
     >
       <a-form-item

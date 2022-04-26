@@ -7,6 +7,7 @@
     <a-form
       ref="formRef"
       size="large"
+      auto-label-width
       :model="form"
       :style="{width:'600px'}"
       @submit="handleSubmit"
