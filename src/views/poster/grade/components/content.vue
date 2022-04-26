@@ -1,13 +1,13 @@
 <template>
   <a-col class="banner">
     <a-typography-title :heading="5" style="margin-top: 0">
-      {{ t('poster.vote.welcome') }}
+      {{ t('poster.grade.welcome') }}
     </a-typography-title>
     <a-divider class="panel-border" />
     <a-table
       :columns="columns"
-      :data="data"
-      :pagination="pagination"	
+      :data="data"	
+      :pagination="pagination"
       :filter-icon-align-left="true"
       @page-change="handlePageChange"
     >
@@ -29,16 +29,9 @@
         <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
       </template>
       <template #action="{ record }">
-        <a-button type="outline" status="success" @click="onVote(record)">{{ t('poster.actionBtn.title') }}</a-button>
+        <a-button type="outline" status="success" @click="onGrade(record)">{{ t('poster.grade') }}</a-button>
       </template>
     </a-table>
-    <a-divider class="panel-border" />
-    <a-tag size="large" color="green">
-      <template #icon>
-        <icon-check-circle-fill />
-      </template>
-      {{ t('poster.voted.tip') }}{{ votedItem }}
-    </a-tag>
   </a-col>
   <a-image-preview
     v-model:visible="visible"
@@ -51,8 +44,10 @@ import { ref, reactive, h } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
+import mitt from 'mitt'
 
 const { t } = useI18n()
+
 const columns = [
   {
     title: t('poster.table.title'),
@@ -115,6 +110,13 @@ const columns = [
   }
 ]
 const data = reactive([
+  {
+    title: 'CST',
+    major: 'CST',
+    author: 'CST',
+    summary: 'CST',
+    url: 'CST',
+  }
 ])
 
 const visible = ref(false)
@@ -123,24 +125,12 @@ const onShowImg = (url: string) => {
   imgurl.value = url
   visible.value = true
 }
-
-const votedItem = reactive({})
-const isVoted = ref(false)
-const onVote = (item: object) => {
-  Modal.confirm({
-    title: t('poster.sureVote.title'),
-    content: t('poster.sureVote.content'),
-    okText: t('poster.modal.confirm'),
-    cancelText: t('poster.modal.cancel'),
-    onOk: () => {
-      isVoted.value = true
-    },
-    onCancel: () => {
-      console.log('cancel')
-    }
-  })
+const emits = defineEmits(['onClick'])
+const onGrade = (record: any) => {
+  emits('onClick', true)
+  const emitter = mitt()
+  emitter.emit('getRecord', record)
 }
-
 const pagination = reactive({
   pageSize: 10,
   current: 1,

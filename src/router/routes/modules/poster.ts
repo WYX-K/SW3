@@ -38,6 +38,16 @@ export default {
         requiresAuth: true,
         roles: ['admin', 'con_coor'],
       },
+    },
+    {
+      path: 'grade',
+      name: 'grade',
+      component: () => import('@/views/poster/grade/index.vue'),
+      meta: {
+        locale: 'menu.poster.grade',
+        requiresAuth: true,
+        roles: ['judge'],
+      },
     }
   ],
 }

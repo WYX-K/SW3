@@ -119,10 +119,22 @@ import { listenerRouteChange } from '@/utils/route-listener'
 
 const role = computed(() => {
   const { getRole } = useUserStore()
-  if (getRole() === 'con_coor') {
-    return 'Coordinator'
+  switch (getRole()) {
+    case 'admin':
+      return 'Administrator'
+    case 'judge':
+      return 'Judge'
+    case 'con_coor':
+      return 'Coordinator'
+    case 'uicer':
+      return 'Uicer'
+    case 'head_judge':
+      return 'Head Judge'
+    case 'dean':
+      return 'Dean'
+    default:
+      return '*'
   }
-  return getRole()
 })
 
 const isLoading = ref(false)

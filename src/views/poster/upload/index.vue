@@ -12,12 +12,6 @@
 import Content from './components/content.vue'
 </script>
 
-<script lang="ts">
-export default {
-  name: 'Home',
-}
-</script>
-
 <style lang="less" scoped>
   .container {
     background-color: var(--color-fill-2);

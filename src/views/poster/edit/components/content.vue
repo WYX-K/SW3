@@ -186,7 +186,7 @@ const columns = [
   },
   {
     title: t('poster.table.summary'),
-    dataIndex: 'summary',
+    slotName: 'summary',
   },
   {
     title: t('poster.table.image'),
