@@ -5,6 +5,7 @@ import localePosterVote from '@/views/poster/show&vote/locale/en-US'
 import localePosterUpload from '@/views/poster/upload/locale/en-US'
 import localePosterEdit from '@/views/poster/edit/locale/en-US'
 import localePosterGrade from '@/views/poster/grade/locale/en-US'
+import localeLuckydrawChoose from '@/views/luckydraw/choose/locale/en-US'
 
 export default {
   'menu.home': 'Home',
@@ -24,5 +25,6 @@ export default {
   ...localePosterVote,
   ...localePosterUpload,
   ...localePosterEdit,
-  ...localePosterGrade
+  ...localePosterGrade,
+  ...localeLuckydrawChoose
 }

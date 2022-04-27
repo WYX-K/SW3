@@ -5,6 +5,7 @@ import localePosterVote from '@/views/poster/show&vote/locale/zh-CN'
 import localePosterUpload from '@/views/poster/upload/locale/zh-CN'
 import localePosterEdit from '@/views/poster/edit/locale/zh-CN'
 import localePosterGrade from '@/views/poster/grade/locale/zh-CN'
+import localeLuckydrawChoose from '@/views/luckydraw/choose/locale/zh-CN'
 
 export default {
   'menu.home': '主页',
@@ -24,5 +25,6 @@ export default {
   ...localePosterVote,
   ...localePosterUpload,
   ...localePosterEdit,
-  ...localePosterGrade
+  ...localePosterGrade,
+  ...localeLuckydrawChoose
 }
