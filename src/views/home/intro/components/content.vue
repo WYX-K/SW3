@@ -1,11 +1,14 @@
 <template>
   <a-col class="banner">
-    <a-col :span="8">
-      <a-typography-title :heading="5" style="margin-top: 0">
-        {{ t('home.welcome') }} {{ userInfo.name }}
-      </a-typography-title>
-    </a-col>
+    <a-typography-title :heading="5" style="margin-top: 0">
+      {{ t('home.welcome') }} {{ userInfo.name }}
+    </a-typography-title>
     <a-divider class="panel-border" />
+    <a-row justify="space-around">
+      <a-col :span="8">
+        <Carousel></Carousel>
+      </a-col>
+    </a-row>
   </a-col>
 </template>
 
@@ -13,6 +16,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n/index'
 import { useUserStore } from '@/store'
+import Carousel from './carousel.vue'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -27,9 +31,5 @@ const userInfo = computed(() => ({
     padding: 20px 20px 0 20px;
     background-color: var(--color-bg-2);
     border-radius: 4px 4px 0 0;
-  }
-
-  :deep(.arco-icon-home) {
-    margin-right: 6px;
   }
 </style>
