@@ -1,3 +1,11 @@
+'''
+Author: Simon
+Date: 2022-04-26 00:06:14
+LastEditTime: 2022-04-28 23:46:36
+LastEditors: Simon
+Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+FilePath: /wxcloudrun-django/wxcloudrun/urls.py
+'''
 """wxcloudrun URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -23,4 +31,6 @@ from CMS import views as CMSviews
 urlpatterns = (
     path('admin/', admin.site.urls),
     url(r'login', CMSviews.logIn),
+    url(r'vote', CMSviews.vote),
+    
 )
