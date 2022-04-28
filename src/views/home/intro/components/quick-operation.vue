@@ -1,13 +1,10 @@
 <template>
   <a-card
     class="general-card"
-    :title="t('workplace.quick.operation')"
+    :title="t('home.quick.operation')"
     :header-style="{ paddingBottom: '0' }"
     :body-style="{ padding: '24px 20px 0 20px' }"
   >
-    <template #extra>
-      <a-link>{{ t('workplace.quickOperation.setup') }}</a-link>
-    </template>
     <a-row :gutter="8">
       <a-col
         v-for="link in links"
@@ -19,7 +16,7 @@
           <component :is="link.icon" />
         </div>
         <a-typography-paragraph class="text">
-          {{ t(link.text) }}
+          {{ link.text }}
         </a-typography-paragraph>
       </a-col>
     </a-row>
@@ -32,11 +29,8 @@ import { useI18n } from 'vue-i18n/index'
 
 const { t } = useI18n()
 const links = [
-  { text: 'workplace.contentManagement', icon: 'icon-file' },
-  { text: 'workplace.contentStatistical', icon: 'icon-storage' },
-  { text: 'workplace.advanced', icon: 'icon-settings' },
-  { text: 'workplace.onlinePromotion', icon: 'icon-mobile' },
-  { text: 'workplace.contentPutIn', icon: 'icon-fire' },
+  { text: 'Zoom', icon: 'icon-lark-color' },
+  { text: '腾讯会议', icon: 'icon-qq' },
 ]
 </script>
 

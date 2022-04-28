@@ -9,6 +9,11 @@
       <a-grid :cols="24" :row-gap="16">
         <a-grid-item :span="24">
           <div class="moduler-wrap">
+            <QuickOperation />
+          </div>
+        </a-grid-item>
+        <a-grid-item :span="24">
+          <div class="moduler-wrap">
             <Announcement />
           </div>
         </a-grid-item>
@@ -20,6 +25,7 @@
 <script lang="ts" setup>
 import Content from './components/content.vue'
 import Announcement from './components/announcement.vue'
+import QuickOperation from './components/quick-operation.vue'
 </script>
 
 <style lang="less" scoped>
@@ -54,4 +60,38 @@ import Announcement from './components/announcement.vue'
     border-radius: 4px;
     background-color: var(--color-bg-2);
   }
+
+  :deep(.wrapper) {
+    margin-bottom: 8px;
+    text-align: center;
+    cursor: pointer;
+
+    &:last-child {
+      .text {
+        margin-bottom: 0;
+      }
+    }
+    &:hover {
+      .icon {
+        color: rgb(var(--arcoblue-6));
+        background-color: #e8f3ff;
+      }
+      .text {
+        color: rgb(var(--arcoblue-6));
+      }
+    }
+  }
+
+  :deep(.icon) {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 4px;
+      color: rgb(var(--dark-gray-1));
+      line-height: 32px;
+      font-size: 16px;
+      text-align: center;
+      background-color: rgb(var(--gray-1));
+      border-radius: 4px;
+    }
 </style>
