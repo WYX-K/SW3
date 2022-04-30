@@ -1,8 +1,8 @@
-# Software Workshop Ⅲ - Conference Management System
+# SW3 Ⅲ - Conference Management System
 
 ## 结构目录说明
 
-````bash
+```bash
 ├─.vscode	// vscode配置文件
 ├─public	// 公开文件
 │  └─image	// 公开图片
@@ -10,7 +10,7 @@
     ├─api	// api文档
     │  └─login
     ├─assets	// 私密文件
-    │  ├─image 
+    │  ├─image
     │  └─style	// 内部样式
     ├─components	// 组件
     │  ├─footer	// 页脚
@@ -25,7 +25,7 @@
     ├─mock	// 模拟接口
     ├─router	// 路由
     │  ├─guard	// 路透守卫
-    │  └─routes	
+    │  └─routes
     │      └─modules
     ├─store	// pinia全局状态存储
     │  └─modules
@@ -67,7 +67,7 @@
     ├─api	// api文档
     │  └─login
     ├─assets	// 私密文件
-    │  ├─image 
+    │  ├─image
     │  └─style	// 内部样式
     ├─components	// 组件
     │  ├─footer	// 页脚
@@ -82,7 +82,7 @@
     ├─mock	// 模拟接口
     ├─router	// 路由
     │  ├─guard	// 路透守卫
-    │  └─routes	
+    │  └─routes
     │      └─modules
     ├─store	// pinia全局状态存储
     │  └─modules
@@ -118,9 +118,7 @@
             └─upload
                 ├─components
                 └─locale
-````
-
-
+```
 
 ## 环境配置
 
@@ -132,7 +130,7 @@ Yarn
 
 ## 运行
 
-````bash
+```bash
+yarn
 yarn dev
-````
-
+```
