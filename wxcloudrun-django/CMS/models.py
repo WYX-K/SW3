@@ -1,7 +1,7 @@
 '''
 Author: Simon
 Date: 2022-04-12 17:43:00
-LastEditTime: 2022-04-28 00:14:23
+LastEditTime: 2022-05-03 19:12:46
 LastEditors: Please set LastEditors
 Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 FilePath: /wxcloudrun-django/CMS/models.py
@@ -34,6 +34,7 @@ class UICerPoster(models.Model):
     username = models.CharField("Username", max_length=20, default="")
     posterid = models.IntegerField("Poster ID", default=0)
     luckydraw = models.CharField("Lucky Draw", max_length=100, default="")
+    voteStatus = models.IntegerField("Vote Status", default=0)
 
     class Meta:
         verbose_name = "UICerPoster"
@@ -51,6 +52,8 @@ class Poster(models.Model):
     file = models.CharField("File", max_length=1000, default="")
     major = models.CharField("Major", max_length=100, default="")
     isGraded = models.IntegerField("IsGraded", default=0)
+    voteNum = models.IntegerField("Vote Num", default=0)
+    grade = models.IntegerField("Grade", default=0)
     
     class Meta:
         verbose_name = "Poster"
