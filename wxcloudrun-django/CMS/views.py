@@ -28,16 +28,18 @@ description: login
 param {username, pwd} request
 return {username, role, name, major} 
 '''
+
+
 def logIn(request):
     # test
     # username = request.GET.get('username')
     # pwd = request.GET.get('pwd')
-    
+
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
-    
+
     logger.info('Login Username: {}, Login PWD: {}'.format(username, pwd))
-    
+
     queryset = UserInfo.objects.filter(username=username)
     for q in queryset:
         vertify_pwd = str(q.pwd).strip()
@@ -47,11 +49,11 @@ def logIn(request):
                 "role": q.role,
                 "major": q.major
             }
-            return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "Login":True, "data": p_temp}, ensure_ascii=False))
+            return HttpResponse(json.dumps(p_temp, ensure_ascii=False), status=200)
         else:
-            return HttpResponse(json.dumps({"status": 404, "msg": "NO!", "Login":False}, ensure_ascii=False))
-    
-    return HttpResponse(json.dumps({"status": 500, "msg": "Err!", "Login":False}, ensure_ascii=False))
+            return HttpResponse(status=404)
+
+    return HttpResponse(status=500)
 
 
 ###################################################
@@ -61,64 +63,56 @@ def logIn(request):
 
 '''
 api: /vote
-description: get vote which one
+method: POST/GET
 param {username} request
-return {posterid}
+return {posterdata}
 '''
+
+
 def vote(request):
-    data = []
-    username = request.GET.get('username')
-    
-    uicerposter_queryset = UICerPoster.objects.filter(username=username)
-    for uicerposter in uicerposter_queryset:
-        verified_posterid = uicerposter.posterid
-        poster_queryset = Poster.objects.filter(posterid=verified_posterid)
-        if poster_queryset:
-            for poster in poster_queryset:
-                p_temp = {
-                    "posterid": poster.posterid,
-                }
-                data.append(p_temp)
+    if request.method == 'GET' and request.GET:
+        data = []
+        username = request.GET.get('username')
+
+        uicerposter_queryset = UICerPoster.objects.filter(username=username)
+        for uicerposter in uicerposter_queryset:
+            verified_posterid = uicerposter.posterid
+            poster_queryset = Poster.objects.filter(posterid=verified_posterid)
+            if poster_queryset:
+                for poster in poster_queryset:
+                    p_temp = {
+                        "posterid": poster.posterid,
+                    }
+                    data.append(p_temp)
+            else:
+                for poster in poster_queryset:
+                    p_temp = {
+                        "posterid": None,
+                    }
+                    data.append(p_temp)
+
+        return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "data": data}, ensure_ascii=False))
+    elif request.method == 'POST' and request.POST:
+        vote_posterid = request.POST.get('posterid')
+        voteuname = request.POST.get('voteuname')
+
+        logger.info('Voted Poster ID: {}, Voter Name: {}'.format(
+            vote_posterid, voteuname))
+
+        if vote_posterid and voteuname:
+            poster_queryset = Poster.objects.filter(posterid=vote_posterid)
+            if poster_queryset:
+                return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "res": "Success!"}, ensure_ascii=False))
+            else:
+                return HttpResponse(json.dumps({"status": 400, "msg": "NO!", "res": "Failed!"}, ensure_ascii=False))
         else:
-            for poster in poster_queryset:
-                p_temp = {
-                    "posterid": None,
-                }
-                data.append(p_temp)
-                
-    return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "data": data}, ensure_ascii=False))
-    
-'''
-api: /poster_vote
-description: post vote
-param {posterid, voteuname} request
-return {res}
-'''
-def posterVote(request):
-    # test
-    # vote_posterid = request.GET.get('posterid')
-    # voteuname = request.GET.get('voteuname')
-    # print("vote_posterid: {}, voteuname: {}".format(vote_posterid, voteuname))
-    
-    vote_posterid = request.POST.get('posterid')
-    voteuname = request.POST.get('voteuname')
-    
-    logger.info('Voted Poster ID: {}, Voter Name: {}'.format(vote_posterid, voteuname))
-    
-    if vote_posterid and voteuname:
-        poster_queryset = Poster.objects.filter(posterid=vote_posterid)
-        if poster_queryset:
-            return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "res": "Success!"}, ensure_ascii=False))
-        else:
-            return HttpResponse(json.dumps({"status": 400, "msg": "NO!", "res": "Failed!"}, ensure_ascii=False))
-    else:
-        return HttpResponse(json.dumps({"status": 404, "msg": "NO!", "res": "Parameters Not Completed!"}, ensure_ascii=False))
-        
-        
+            return HttpResponse(json.dumps({"status": 404, "msg": "NO!", "res": "Parameters Not Completed!"}, ensure_ascii=False))
+
 ###################################################
 ###################################################
 # Lucky Draw API
 ###################################################
+
 
 '''
 api: /chooseLuckydraw
@@ -126,11 +120,13 @@ description: choose luckydraw
 param {} request
 return {name, rank}
 '''
+
+
 def chooseLuckydraw(request):
     data = []
     user_queryset = UserInfo.objects.all()
     user_list = []
-    
+
     # get all username
     for user in user_queryset:
         user_list.append(user.username)
@@ -147,7 +143,7 @@ def chooseLuckydraw(request):
     while rank3_num == rank1_num or rank3_num == rank2_num:
         rank3_num = random.randint(0, user_len - 1)
     rank3_user = user_list[rank3_num]
-    
+
     p_temp = {
         "First": rank1_user,
         "Second": rank2_user,
@@ -156,4 +152,3 @@ def chooseLuckydraw(request):
     data.append(p_temp)
 
     return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "data": data}, ensure_ascii=False))
-    

@@ -22,16 +22,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+
 from wxcloudrun import views
 from django.conf.urls import url
 from django.urls import path
 from django.contrib import admin
 from CMS import views as CMSviews
-
 urlpatterns = (
     path('admin/', admin.site.urls),
     url(r'login', CMSviews.logIn),
     url(r'vote', CMSviews.vote),
-    url(r'posterVote', CMSviews.posterVote),
     url(r'chooseLuckydraw', CMSviews.chooseLuckydraw),
 )
