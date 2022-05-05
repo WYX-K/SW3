@@ -2,9 +2,10 @@ import os
 from pathlib import Path
 import time
 
-CUR_PATH = os.path.dirname(os.path.realpath(__file__))  
-LOG_PATH = os.path.join(os.path.dirname(CUR_PATH), 'logs') # LOG_PATH是存放日志的路径
-if not os.path.exists(LOG_PATH): os.mkdir(LOG_PATH)  # 如果不存在这个logs文件夹，就自动创建一个
+CUR_PATH = os.path.dirname(os.path.realpath(__file__))
+LOG_PATH = os.path.join(os.path.dirname(CUR_PATH), 'logs')  # LOG_PATH是存放日志的路径
+if not os.path.exists(LOG_PATH):
+    os.mkdir(LOG_PATH)  # 如果不存在这个logs文件夹，就自动创建一个
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,14 +24,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wxcloudrun',
     'CMS'
 ]
 
@@ -44,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'wxcloudrun.urls'
+ROOT_URLCONF = 'CMS.urls'
 
 TEMPLATES = [
     {
@@ -62,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'wxcloudrun.wsgi.application'
+WSGI_APPLICATION = 'CMS.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

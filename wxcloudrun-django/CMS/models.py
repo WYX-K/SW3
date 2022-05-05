@@ -17,7 +17,6 @@ from django.db import models
 
 
 class UserInfo(models.Model):
-    userid = models.IntegerField("User ID", default=1)
     username = models.CharField("Username", max_length=20, default="")
     pwd = models.CharField("Password", max_length=100, default="")
     role = models.CharField("Role", max_length=100, default="")

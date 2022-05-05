@@ -91,7 +91,7 @@ def vote(request):
                     }
                     data.append(p_temp)
 
-        return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "data": data}, ensure_ascii=False))
+        return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
     elif request.method == 'POST' and request.POST:
         vote_posterid = request.POST.get('posterid')
         voteuname = request.POST.get('voteuname')
@@ -102,11 +102,12 @@ def vote(request):
         if vote_posterid and voteuname:
             poster_queryset = Poster.objects.filter(posterid=vote_posterid)
             if poster_queryset:
-                return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "res": "Success!"}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"res": "Success!"}, ensure_ascii=False), status=200)
             else:
-                return HttpResponse(json.dumps({"status": 400, "msg": "NO!", "res": "Failed!"}, ensure_ascii=False))
+                return HttpResponse(json.dumps({"res": "Failed!"}, ensure_ascii=False), status=401)
         else:
-            return HttpResponse(json.dumps({"status": 404, "msg": "NO!", "res": "Parameters Not Completed!"}, ensure_ascii=False))
+            return HttpResponse(json.dumps({"res": "Parameters Not Completed!"}, ensure_ascii=False), status=404)
+    return HttpResponse(status=500)
 
 ###################################################
 ###################################################
