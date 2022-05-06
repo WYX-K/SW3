@@ -28,7 +28,7 @@ export default defineConfig({
     // 反向代理
     proxy: {
       '/api': {
-        target: 'https://cms-1591686-1309449446.ap-shanghai.run.tcloudbase.com', // 代理的地址
+        target: 'http://127.0.0.1:8000/', // 代理的地址
         changeOrigin: true,
       },
       '/api/mock': {

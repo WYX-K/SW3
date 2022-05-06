@@ -17,14 +17,17 @@ export default function useUser() {
   const login = async (data: FormData, router: Router, t: any) => {
     try {
       const res = await userStore.login(data)
-      if (res.status) {
+      console.log(res)
+      if (res.status === 200) {
         consola.success(res)
         router.push({
           name: 'intro',
         })
         Message.success(t('login.form.login.success'))
+      } else if (res.status === 201) {
+        Message.success(t('login.form.login.checkEmail'))
       } else {
-        Message.error(t('login.form.login.fail'))
+        Message.success(t('login.form.login.fail'))
       }
     } catch (err) {
       consola.error(err)

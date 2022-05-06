@@ -32,9 +32,9 @@ axios.interceptors.response.use(
   error => {
     const { response } = error
     if (response) {
-      console.log(`response error, ${ response.status }`)
       // 请求已发出，但是不在2xx的范围
-      showMessage(response.status) // 传入响应码，匹配响应码对应信息
+      // showMessage(response.status) // 传入响应码，匹配响应码对应信息
+      Message.warning(showMessage(response.status))
       return Promise.reject(response.data)
     } 
     Message.warning('Networking error')

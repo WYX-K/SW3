@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n/index'
@@ -83,16 +83,29 @@ import useLoading from '@/hooks/loading'
 import { LoginData } from '@/api/login'
 import useLocale from '@/hooks/locale'
 import useUser from '@/hooks/user'
+// import { listenerRouteChange } from '@/utils/route-listener'
 
 const router = useRouter()
-const { t } = useI18n()
-const errorMessage = ref('')
 const { loading, setLoading } = useLoading()
-const userInfo = reactive({
-  username: 'simon',
-  password: 'simon',
+const { t } = useI18n()
+onMounted(async () => {
+  const query = router.currentRoute.value.query
+  if (Object.keys(query).length) {
+    const { login } = useUser()
+    const data = new FormData()
+    data.append('username', query.username as string)
+    data.append('pwd', query.pwd as string)
+    data.append('isChecked', 'true')
+    setLoading(true)
+    await login(data, router, t)
+    setLoading(false)
+  }
 })
-
+const errorMessage = ref('')
+const userInfo = reactive({
+  username: '',
+  password: '',
+})
 const handleSubmit = async ({
   errors,
   values,
@@ -104,16 +117,13 @@ const handleSubmit = async ({
     const data = new FormData()
     data.append('username', values.username)
     data.append('pwd', values.password)
+    data.append('isChecked', 'false')
     const { login } = useUser()
     setLoading(true)
     await login(data, router, t)
     setLoading(false)
   }
 }
-const setRememberPassword = () => {
-  //
-}
-
 const localeValue = ref('')
 const locale = useLocale()
 if (locale.currentLocale.value === 'zh-CN') {

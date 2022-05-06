@@ -11,4 +11,5 @@ export default {
   'login.form.login': 'login',
   'login.form.register': 'register account',
   'login.form.logout.success': 'logout success',
+  'login.form.login.checkEmail': 'Please verify email first',
 }

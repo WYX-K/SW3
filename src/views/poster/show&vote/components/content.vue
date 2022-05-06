@@ -37,7 +37,7 @@
       <template #icon>
         <icon-check-circle-fill />
       </template>
-      {{ t('poster.voted.tip') }}{{ votedItem }}
+      {{ t('poster.voted.tip') }} {{ votedItem }}
     </a-tag>
   </a-col>
   <a-image-preview
@@ -124,7 +124,7 @@ const onShowImg = (url: string) => {
   visible.value = true
 }
 
-const votedItem = reactive({})
+const votedItem = ref(0)
 const isVoted = ref(false)
 const onVote = (item: object) => {
   Modal.confirm({

@@ -41,12 +41,15 @@ const useUserStore = defineStore('user', {
 
     async login(prama: FormData) {
       const res = await getLoginData(prama)
-      this.role = res.data.data.role
-      this.name = res.data.data.name
-      sessionStorage.setItem('ROLE', res.data.data.role)
-      sessionStorage.setItem('NAME', res.data.data.name)
-      setToken('USER')
-      this.isLogin = true
+      if (res.status === 200) {
+        this.role = res.data.role
+        this.name = res.data.name
+        sessionStorage.setItem('ROLE', res.data.role)
+        sessionStorage.setItem('NAME', res.data.name)
+        sessionStorage.setItem('MAJOR', res.data.major)
+        setToken('USER')
+        this.isLogin = true
+      }
       return res
     },
 
