@@ -11,6 +11,9 @@ import json
 from django.http import HttpResponse
 import logging
 from .models import *
+import smtplib
+from email.mime.text import MIMEText
+from email.utils import formataddr
 import random
 
 # Create your views here.
@@ -37,24 +40,88 @@ def logIn(request):
 
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
-
+    isChecked = request.POST.get('isChecked')
     logger.info('Login Username: {}, Login PWD: {}'.format(username, pwd))
 
-    queryset = UserInfo.objects.filter(username=username)
-    for q in queryset:
-        vertify_pwd = str(q.pwd).strip()
+    users = UserInfo.objects.filter(username=username)
+    if len(users) != 0:
+        user = users[0]
+        vertify_pwd = str(user.pwd).strip()
         if pwd == vertify_pwd:
-            p_temp = {
-                "name": q.username,
-                "role": q.role,
-                "major": q.major
-            }
-            return HttpResponse(json.dumps(p_temp, ensure_ascii=False), status=200)
+            if user.role == 'uicer' and isChecked == 'false':
+                sendMail(user.username, pwd)
+                return HttpResponse(json.dumps({"res": "Send Email Success!"}, ensure_ascii=False), status=201)
+            else:
+                p_temp = {
+                    "name": user.username,
+                    "role": user.role,
+                    "major": user.major
+                }
+                return HttpResponse(json.dumps(p_temp, ensure_ascii=False), status=200)
         else:
             return HttpResponse(status=404)
+    else:
+        return HttpResponse(status=500)
 
-    return HttpResponse(status=500)
 
+def sendMail(username, pwd):
+    try:
+        mail_msg = """
+        <p> Hello, welcome to use Sigma CMS! </p>
+        <p> Please check whether the following information is correct. 
+        If you receive this email by mistake, please ignore it! </p>
+        <p> Username: """ + username.split('@')[0] + """</p>
+        <p> Please click the following link to activate your account: </p>
+        <p> <a href="http://localhost:3000/login/?username="""+username+"""&pwd="""+pwd+"""">Activate</a></p>
+        """
+        mail('1135613552@qq.com', 'onvifnjypwxkjfde',
+             username, 'WYX', 'uicer', mail_msg)
+    except:
+        print('邮件发送失败！')
+
+
+'''
+    配置发邮件所需的基础信息
+    my_sender # 配置发件人邮箱地址***@qq.com
+    my_pass   # 配置发件人邮箱密码 
+    to_user   # 配置收件人邮箱地址***@163.com
+    my_nick   # 配置发件人昵称草璧月
+    to_nick   # 配置收件人昵称方立娇
+    mail_msg  # 配置邮件内容你好，这是我用python发送的电子邮件
+'''
+
+
+def mail(my_sender, my_pass, to_user, my_nick, to_nick, mail_msg):
+    # 必须将邮件内容做一次MIME转换--发送含链接的邮件
+    msg = MIMEText(mail_msg, 'html', 'utf-8')
+    # 配置发件人名称和邮箱地址
+    msg['from'] = formataddr([my_nick, my_sender])
+    # 配置收件人名称和邮箱地址
+    msg['to'] = formataddr([to_nick, to_user])
+    # 配置邮件主题
+    msg['Subject'] = "Welcom to CMS"
+    # 配置python与邮件的SMPT服务器的连接通道（ qq邮箱）
+    server = smtplib.SMTP_SSL("smtp.qq.com", 465)
+    server.set_debuglevel(1)
+    # 模拟登录
+    server.login(my_sender, my_pass)
+    # 邮件内容发送
+    server.sendmail(my_sender, [to_user, ], msg.as_string())
+    # 关闭连接通道
+    server.quit()
+
+###################################################
+###################################################
+# Post API
+###################################################
+
+
+'''
+api: /post
+method: POST/GET/DELETE
+param {username} request
+return {posterdata}
+'''
 
 ###################################################
 ###################################################
