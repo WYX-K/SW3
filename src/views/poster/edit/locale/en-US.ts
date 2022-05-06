@@ -3,4 +3,5 @@ export default {
   'poster.editBtn.title': 'Edit',
   'edit.modal.title': 'Edit poster',
   'poster.delete': 'Delete',
+  'poster.get.success': 'Get poster success',
 }

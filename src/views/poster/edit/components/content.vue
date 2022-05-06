@@ -4,38 +4,48 @@
       {{ t('poster.edit.welcome') }}
     </a-typography-title>
     <a-divider class="panel-border" />
-    <a-table
-      v-model:selectedKeys="selectedKeys"
-      :columns="columns"
-      :data="data"	
-      :pagination="pagination"
-      :filter-icon-align-left="true"
-      :row-selection="rowSelection"
-      @page-change="handlePageChange"
-    >
-      <template #filter="{ filterValue, setFilterValue, handleFilterConfirm, handleFilterReset}">
-        <div class="custom-filter">
-          <a-space direction="vertical">
-            <a-input :model-value="filterValue[0]" @input="(value: string)=>setFilterValue([value])" />
-            <div class="custom-filter-footer">
-              <a-button @click="handleFilterConfirm">{{ t('poster.filter.confirm') }}</a-button>
-              <a-button @click="handleFilterReset">{{ t('poster.filter.reset') }}</a-button>
-            </div>
-          </a-space>
-        </div>
-      </template>
-      <template #summary="{ record }">
-        <a-button @click="Modal.info({ title:t('poster.table.summary'), content:record.summary })">{{ t('poster.imageBtn.title') }}</a-button>
-      </template>
-      <template #image="{ record }">
-        <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
-      </template>
-      <template #action="{ record }">
-        <a-button type="outline" status="success" @click="onEdit(record)">{{ t('poster.editBtn.title') }}</a-button>
-      </template>
-    </a-table>
+    <a-spin :loading="loading" tip="This may take a while..." style="width: 100%">
+      <a-table 
+        :row-selection="rowSelection"
+        :columns="columns"
+        :data="data.list"	
+        :pagination="pagination"
+        :filter-icon-align-left="true"
+        style="width: 100%"
+        @page-change="handlePageChange"
+        @select="onRowSelect"
+      >
+        <template #filter="{ filterValue, setFilterValue, handleFilterConfirm, handleFilterReset}">
+          <div class="custom-filter">
+            <a-space direction="vertical">
+              <a-input :model-value="filterValue[0]" @input="(value: string)=>setFilterValue([value])" />
+              <div class="custom-filter-footer">
+                <a-button @click="handleFilterConfirm">{{ t('poster.filter.confirm') }}</a-button>
+                <a-button @click="handleFilterReset">{{ t('poster.filter.reset') }}</a-button>
+              </div>
+            </a-space>
+          </div>
+        </template>
+        <template #summary="{ record }">
+          <a-button @click="Modal.info({ title:t('poster.table.summary'), content:record.summary })">{{ t('poster.imageBtn.title') }}</a-button>
+        </template>
+        <template #image="{ record }">
+          <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
+        </template>
+        <template #action="{ record }">
+          <a-button type="outline" status="success" @click="onEdit(record)">{{ t('poster.editBtn.title') }}</a-button>
+        </template>
+      </a-table>
+    </a-spin>
     <a-divider class="panel-border" />
-    <a-button v-show="isBtnShow" style="position:absolute; right:5%" type="primary">{{ t('poster.delete') }}</a-button>
+    <a-button
+      v-show="isBtnShow"
+      style="position:absolute; right:5%"
+      type="primary"
+      @click="onDeletePoster"
+    >
+      {{ t('poster.delete') }}
+    </a-button>
   </a-col>
   <a-image-preview
     v-model:visible="visible"
@@ -122,22 +132,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, h, computed } from 'vue'
+import { ref, reactive, h, computed, onMounted } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
-import { Modal } from '@arco-design/web-vue'
+import { Message, Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
+import { getPoster, deletePoster } from '@/api/poster'
 
 const { t } = useI18n()
-
 const selectedKeys = ref([])
-const isBtnShow = computed(() => selectedKeys.value.length > 0)
-
+const onRowSelect = (rowKeys:string[]) => {
+  console.log(selectedKeys.value)
+}
 const rowSelection = {
   type: 'checkbox',
   showCheckedAll: true
 }
-
+const onDeletePoster = () => {
+  console.log(selectedKeys.value)
+}
+const isBtnShow = computed(() => true)
 const columns = [
   {
     title: computed(() => t('poster.table.title')),
@@ -170,6 +184,9 @@ const columns = [
       }, {
         text: 'APSY',
         value: 'APSY',
+      }, {
+        text: 'FST',
+        value: 'FST',
       }],
       filter: (value:string, row: any) => row.major.includes(value),
       multiple: true,
@@ -199,8 +216,9 @@ const columns = [
     fixed: 'right',
   }
 ]
-const data = reactive([
-])
+const data = reactive({
+  list: [],
+})
 
 const visible = ref(false)
 const imgurl = ref('')
@@ -243,16 +261,42 @@ const handleSubmit = (e: any) => {
   }
 }
 const pagination = reactive({
-  pageSize: 10,
+  pageSize: 6,
   current: 1,
-  total: data.length,
+  total: data.list.length,
   hideOnSinglePage: true
 })
-const handlePageChange = (page: number) => {
-  console.log(page)
-  pagination.current = page
-}
 
+const loading = ref(false)
+const getPosterList = async () => {
+  const params = {
+    pageNum: pagination.current - 1,
+    pageSize: pagination.pageSize,
+  }
+  try {
+    loading.value = true
+    const res = await getPoster({ params })
+    if (res.status === 200) { 
+      data.list = res.data.map((item: any) => {
+        item.url = `data:image/png;base64,${ item.url }`
+        item.key = item.id
+        return item
+      })
+      pagination.total = res.data[0].total
+      Message.success(t('poster.get.success'))
+    }
+  } catch (err) {
+    console.log(err)
+  }
+  loading.value = false
+}
+const handlePageChange = (page: number) => {
+  pagination.current = page
+  getPosterList()
+}
+onMounted(() => {
+  getPosterList()
+})
 </script>
 
 <style scoped lang="less">
