@@ -30,4 +30,5 @@ urlpatterns = (
     url(r'login', CMSviews.logIn),
     url(r'vote', CMSviews.vote),
     url(r'chooseLuckydraw', CMSviews.chooseLuckydraw),
+    url(r'poster', CMSviews.poster),
 )

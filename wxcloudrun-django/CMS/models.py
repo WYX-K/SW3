@@ -21,6 +21,7 @@ class UserInfo(models.Model):
     pwd = models.CharField("Password", max_length=100, default="")
     role = models.CharField("Role", max_length=100, default="")
     major = models.CharField("Major", max_length=100, default="")
+    name = models.CharField("Name", max_length=100, default="")
 
     class Meta:
         verbose_name = "UserInfo"
@@ -55,11 +56,12 @@ class UICerPoster(models.Model):
 
 
 class Poster(models.Model):
-    posterid = models.IntegerField("Poster ID", default=0)
     title = models.CharField("Title", max_length=500, default="")
     summary = models.CharField("Summary", max_length=1000, default="")
-    file = models.CharField("File", max_length=1000, default="")
+    file = models.BinaryField("File")
     major = models.CharField("Major", max_length=100, default="")
+    author = models.CharField("Author", max_length=100, default="")
+    author_email = models.CharField("Username", max_length=20, default="")
     isGraded = models.IntegerField("IsGraded", default=0)
     voteNum = models.IntegerField("Vote Num", default=0)
     grade = models.IntegerField("Grade", default=0)

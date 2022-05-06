@@ -9,6 +9,7 @@ FilePath: /wxcloudrun-django/CMS/views.py
 from collections import UserList
 import json
 from django.http import HttpResponse
+from django.core.serializers import serialize
 import logging
 from .models import *
 import smtplib
@@ -52,12 +53,13 @@ def logIn(request):
                 sendMail(user.username, pwd)
                 return HttpResponse(json.dumps({"res": "Send Email Success!"}, ensure_ascii=False), status=201)
             else:
-                p_temp = {
-                    "name": user.username,
+                user_temp = {
+                    "username": user.username,
+                    "name": user.name,
                     "role": user.role,
                     "major": user.major
                 }
-                return HttpResponse(json.dumps(p_temp, ensure_ascii=False), status=200)
+                return HttpResponse(json.dumps(user_temp, ensure_ascii=False), status=200)
         else:
             return HttpResponse(status=404)
     else:
@@ -117,17 +119,34 @@ def mail(my_sender, my_pass, to_user, my_nick, to_nick, mail_msg):
 
 
 '''
-api: /post
+api: /poster
 method: POST/GET/DELETE
 param {username} request
 return {posterdata}
 '''
 
+
+def poster(request):
+    if request.method == 'POST' and request.POST:
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        summary = request.POST.get('summary')
+        file = request.FILES.get('file').read()
+        major = request.POST.get('major')
+        author_email = request.POST.get('author_email')
+        
+        res = Poster.objects.create(
+            title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
+        if res:
+            return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+        else:
+            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+    
+
 ###################################################
 ###################################################
 # Vote API
 ###################################################
-
 '''
 api: /vote
 method: POST/GET
