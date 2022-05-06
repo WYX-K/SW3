@@ -6,6 +6,7 @@ LastEditors: Please set LastEditors
 Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 FilePath: /wxcloudrun-django/CMS/views.py
 '''
+import base64
 from collections import UserList
 import json
 from django.http import HttpResponse
@@ -134,14 +135,41 @@ def poster(request):
         file = request.FILES.get('file').read()
         major = request.POST.get('major')
         author_email = request.POST.get('author_email')
-        
+
         res = Poster.objects.create(
             title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
         if res:
             return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
         else:
             return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
-    
+    elif request.method == 'DELETE' and request.DELETE:
+        id = request.DELETE.get('id')
+        res = Poster.objects.filter(id=id).delete()
+        if res:
+            return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+        else:
+            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+    elif request.method == 'GET' and request.GET:
+        pageNum = int(request.GET.get('pageNum'))
+        pageSize = int(request.GET.get('pageSize'))
+        num = pageNum * pageSize
+        total = len(Poster.objects.all())
+        posters = Poster.objects.all()[num:num+pageSize]
+        res = []
+        for poster in posters:
+            data = {}
+            data['id'] = poster.id
+            data['title'] = poster.title
+            data['author'] = poster.author
+            data['summary'] = poster.summary
+            url = str(base64.b64encode(poster.file), 'utf8')
+            data['url'] = url
+            data['major'] = poster.major
+            data['total'] = total
+            res.append(data)
+        return HttpResponse(json.dumps(res, ensure_ascii=False), status=200)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
 
 ###################################################
 ###################################################
