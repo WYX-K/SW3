@@ -17,7 +17,6 @@ export default function useUser() {
   const login = async (data: FormData, router: Router, t: any) => {
     try {
       const res = await userStore.login(data)
-      console.log(res)
       if (res.status === 200) {
         consola.success(res)
         router.push({

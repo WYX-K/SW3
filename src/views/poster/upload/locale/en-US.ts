@@ -13,4 +13,7 @@ export default {
   'poster.upload.submit': 'Upload',
   'poster.upload.reset': 'Reset',
   'upload.image.tip': 'Upload poster image',
+  'upload.authorEmail.label': 'Author Email:',
+  'upload.authorEmail.tip': 'Input author email',
+  'upload.success': 'Upload success',
 }

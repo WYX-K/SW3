@@ -28,6 +28,18 @@
       >
         <a-input v-model="form.author" :placeholder="t('upload.author.tip')" />
       </a-form-item>
+      <a-form-item
+        field="authorEmail"
+        :label="t('upload.authorEmail.label')"
+        :rules="[{required:true, message:t('upload.authorEmail.tip')}]"
+        :validate-trigger="['change','input']"
+      >
+        <a-input v-model="form.authorEmail" :placeholder="t('upload.authorEmail.tip')">
+          <template #append>
+            @mail.uic.edu.cn
+          </template>
+        </a-input>
+      </a-form-item>
       <a-form-item 
         field="major" 
         :label="t('upload.major.label')" 
@@ -80,15 +92,16 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
-import { Modal } from '@arco-design/web-vue'
+import { Message, Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
-import consola from 'consola'
+import { postPoster } from '@/api/poster'
 
 const { t } = useI18n()
 
 const form = reactive({
   title: '',
   author: '',
+  authorEmail: '',
   major: '',
   summary: '',
   fileList: [],
@@ -101,7 +114,23 @@ const rules = [{
   }
 }]
 const uploadPosterInfo = async (form: any) => {
-  consola.success(form)
+  const data = new FormData()
+  data.append('title', form.title)
+  data.append('author', form.author)
+  data.append('major', form.major)
+  data.append('summary', form.summary)
+  data.append('file', form.fileList[0].file)
+  data.append('author_email', `${ form.authorEmail }@mail.uic.edu.cn`)
+  const res = await postPoster(data)
+  if (res.status === 200) {
+    Message.success(t('upload.success'))
+    form.title = ''
+    form.author = ''
+    form.major = ''
+    form.summary = ''
+    form.fileList = []
+    form.authorEmail = ''
+  }
 }
 const handleSubmit = (e: any) => {
   if (typeof (e.errors) === 'undefined') {
@@ -112,11 +141,6 @@ const handleSubmit = (e: any) => {
       cancelText: t('poster.modal.cancel'),
       onOk: () => {
         uploadPosterInfo(e.values)
-        form.title = ''
-        form.author = ''
-        form.major = ''
-        form.summary = ''
-        form.fileList = []
       }
     })
   }

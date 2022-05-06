@@ -13,4 +13,7 @@ export default {
   'poster.upload.submit': '上传',
   'poster.upload.reset': '重置',
   'upload.image.tip': '请上传海报图片',
+  'upload.authorid.label': '作者邮箱：',
+  'upload.authorEmail.tip': '请输入作者邮箱',
+  'upload.success': '上传成功',
 }

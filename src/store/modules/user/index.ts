@@ -7,6 +7,7 @@ import { getLoginData } from '@/api/login'
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
     name: undefined,
+    username: undefined,
     role: 'uicer',
     isLogin: false
   }),
@@ -44,8 +45,9 @@ const useUserStore = defineStore('user', {
       if (res.status === 200) {
         this.role = res.data.role
         this.name = res.data.name
+        this.username = res.data.username
         sessionStorage.setItem('ROLE', res.data.role)
-        sessionStorage.setItem('NAME', res.data.name)
+        sessionStorage.setItem('USERNAME', res.data.username)
         sessionStorage.setItem('MAJOR', res.data.major)
         setToken('USER')
         this.isLogin = true
