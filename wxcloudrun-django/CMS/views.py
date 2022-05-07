@@ -9,6 +9,7 @@ FilePath: /wxcloudrun-django/CMS/views.py
 from ast import Return
 import base64
 import json
+import re
 from django.http import HttpResponse, QueryDict
 import logging
 from .models import *
@@ -227,12 +228,15 @@ def vote(request):
             data['major'] = poster.major
             return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
         else:
-            return HttpResponse(json.dumps(poster, ensure_ascii=False), status=201)
+            return HttpResponse(status=201)
     elif request.method == 'POST' and request.POST:
         poster_id = request.POST.get('posterid')
         voteuname = request.POST.get('username')
         uicer = UICerPoster.objects.filter(username=voteuname)
         if len(uicer):
+            p_poster = Poster.objects.get(id=uicer[0].posterid)
+            p_poster.voteNum -= 1
+            p_poster.save()
             uicer[0].posterid = poster_id
             uicer[0].save()
         else:
@@ -264,34 +268,32 @@ def luckydraw(request):
         for user in user_queryset:
             user_list.append(user.username)
         user_len = len(user_list)
-        if user_len > 3:
-            # get random num
-            rank1_num = random.randint(0, user_len - 1)
-            rank1_user = user_list[rank1_num]
+        # get random num
+        rank1_num = random.randint(0, user_len - 1)
+        rank1_user = user_list[rank1_num]
+        rank2_num = random.randint(0, user_len - 1)
+        while rank1_num == rank2_num:
             rank2_num = random.randint(0, user_len - 1)
-            while rank1_num == rank2_num:
-                rank2_num = random.randint(0, user_len - 1)
-            rank2_user = user_list[rank2_num]
+        rank2_user = user_list[rank2_num]
+        rank3_num = random.randint(0, user_len - 1)
+        while rank3_num == rank1_num or rank3_num == rank2_num:
             rank3_num = random.randint(0, user_len - 1)
-            while rank3_num == rank1_num or rank3_num == rank2_num:
-                rank3_num = random.randint(0, user_len - 1)
-            rank3_user = user_list[rank3_num]
-            uicer = UICerPoster.objects.get(username=rank1_user)
-            uicer.luckydraw = 'FIRST'
-            uicer.save()
-            uicer = UICerPoster.objects.get(username=rank2_user)
-            uicer.luckydraw = 'SECOND'
-            uicer.save()
-            uicer = UICerPoster.objects.get(username=rank3_user)
-            uicer.luckydraw = 'THIRD'
-            uicer.save()
-            data = {
-                "1": rank1_user,
-                "2": rank2_user,
-                "3": rank3_user
-            }
-            return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
-        return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=404)
+        rank3_user = user_list[rank3_num]
+        uicer = UICerPoster.objects.get(username=rank1_user)
+        uicer.luckydraw = 'FIRST'
+        uicer.save()
+        uicer = UICerPoster.objects.get(username=rank2_user)
+        uicer.luckydraw = 'SECOND'
+        uicer.save()
+        uicer = UICerPoster.objects.get(username=rank3_user)
+        uicer.luckydraw = 'THIRD'
+        uicer.save()
+        data = {
+            "1": rank1_user,
+            "2": rank2_user,
+            "3": rank3_user
+        }
+        return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
     elif request.method == 'GET':
         uicers = UICerPoster.objects.filter(
             Q(luckydraw='FIRST') | Q(luckydraw='SECOND') | Q(luckydraw='THIRD'))
@@ -307,4 +309,33 @@ def luckydraw(request):
             return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
         else:
             return HttpResponse(status=201)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+
+###################################################
+###################################################
+# Grade API
+###################################################
+
+
+'''
+api: /grade
+method: POST/GET
+'''
+
+
+def grade(request):
+    if request.method == 'POST' and request.POST:
+        posterid = request.POST.get('id')
+        visual_layout = request.POST.get('visual_layout')
+        poster_organization = request.POST.get('poster_organization')
+        poster_content = request.POST.get('poster_content')
+        written_language = request.POST.get('written_language')
+        oral_presentation = request.POST.get('oral_presentation')
+        poster = Poster.objects.get(id=posterid)
+        poster.isGraded = 1
+        poster.save()
+        JudgePoster.objects.create(poster=posterid, visual_layout=visual_layout, poster_content=poster_content,
+                                   poster_organization=poster_organization, written_language=written_language, oral_presentation=oral_presentation)
+        return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
     return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)

@@ -79,7 +79,6 @@ class Poster(models.Model):
 
 
 class JudgePoster(models.Model):
-    username = models.CharField("Username", max_length=100, default="")
     poster = models.CharField("Poster", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")
@@ -102,7 +101,6 @@ class JudgePoster(models.Model):
 
 
 class HeadPoster(models.Model):
-    username = models.CharField("Username", max_length=100, default="")
     poster = models.CharField("Poster", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")

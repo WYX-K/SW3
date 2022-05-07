@@ -32,4 +32,5 @@ urlpatterns = (
     url(r'luckydraw', CMSviews.luckydraw),
     url(r'poster', CMSviews.poster),
     url(r'editPoster', CMSviews.editPoster),
+    url(r'grade', CMSviews.grade),
 )
