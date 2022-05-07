@@ -7,10 +7,8 @@ Description: 打开koroFileHeader查看配置 进行设置: https://github.com/O
 FilePath: /wxcloudrun-django/CMS/views.py
 '''
 import base64
-from collections import UserList
 import json
-from django.http import HttpResponse
-from django.core.serializers import serialize
+from django.http import HttpResponse, QueryDict
 import logging
 from .models import *
 import smtplib
@@ -122,8 +120,6 @@ def mail(my_sender, my_pass, to_user, my_nick, to_nick, mail_msg):
 '''
 api: /poster
 method: POST/GET/DELETE
-param {username} request
-return {posterdata}
 '''
 
 
@@ -135,20 +131,17 @@ def poster(request):
         file = request.FILES.get('file').read()
         major = request.POST.get('major')
         author_email = request.POST.get('author_email')
-
-        res = Poster.objects.create(
-            title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
-        if res:
-            return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
-        else:
-            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
-    elif request.method == 'DELETE' and request.DELETE:
-        id = request.DELETE.get('id')
-        res = Poster.objects.filter(id=id).delete()
-        if res:
-            return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
-        else:
-            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+        if len(Poster.objects.filter(author_email=author_email)) == 0:
+            res = Poster.objects.create(
+                title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
+            if res:
+                return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+    elif request.method == "DELETE":
+        qs = QueryDict(request.body)
+        ids = qs.getlist('ids[]')
+        for id in ids:
+            Poster.objects.filter(id=id).delete()
+        return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
     elif request.method == 'GET' and request.GET:
         pageNum = int(request.GET.get('pageNum'))
         pageSize = int(request.GET.get('pageSize'))
@@ -169,6 +162,37 @@ def poster(request):
             res.append(data)
         return HttpResponse(json.dumps(res, ensure_ascii=False), status=200)
     return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+
+'''
+api: /editPoster
+method: POST
+'''
+
+
+def editPoster(request):
+    title = request.POST.get('title')
+    author = request.POST.get('author')
+    summary = request.POST.get('summary')
+    file = request.FILES.get('file')
+    major = request.POST.get('major')
+    author_email = request.POST.get('author_email')
+    id = request.POST.get('id')
+    poster = Poster.objects.get(id=id)
+    if title:
+        poster.title = title
+    if author:
+        poster.author = author
+    if summary:
+        poster.summary = summary
+    if file:
+        poster.file = file.read()
+    if major:
+        poster.major = major
+    if author_email:
+        poster.author_email = author_email
+    poster.save()
+    return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
 
 
 ###################################################
