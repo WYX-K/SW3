@@ -146,8 +146,16 @@ def poster(request):
         pageNum = int(request.GET.get('pageNum'))
         pageSize = int(request.GET.get('pageSize'))
         num = pageNum * pageSize
-        total = len(Poster.objects.all())
-        posters = Poster.objects.all()[num:num+pageSize]
+        major = request.GET.get('major')
+        if major == 'all':
+            posters = Poster.objects.all()
+            total = len(posters)
+            posters = posters[num:num+pageSize]
+        else:
+            posters = Poster.objects.filter(major=major)
+            total = len(posters)
+            posters = posters[num:num+pageSize]
+
         res = []
         for poster in posters:
             data = {}
@@ -209,43 +217,32 @@ return {posterdata}
 
 def vote(request):
     if request.method == 'GET' and request.GET:
-        data = []
         username = request.GET.get('username')
-
-        uicerposter_queryset = UICerPoster.objects.filter(username=username)
-        for uicerposter in uicerposter_queryset:
-            verified_posterid = uicerposter.posterid
-            poster_queryset = Poster.objects.filter(posterid=verified_posterid)
-            if poster_queryset:
-                for poster in poster_queryset:
-                    p_temp = {
-                        "posterid": poster.posterid,
-                    }
-                    data.append(p_temp)
-            else:
-                for poster in poster_queryset:
-                    p_temp = {
-                        "posterid": None,
-                    }
-                    data.append(p_temp)
-
-        return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
-    elif request.method == 'POST' and request.POST:
-        vote_posterid = request.POST.get('posterid')
-        voteuname = request.POST.get('voteuname')
-
-        logger.info('Voted Poster ID: {}, Voter Name: {}'.format(
-            vote_posterid, voteuname))
-
-        if vote_posterid and voteuname:
-            poster_queryset = Poster.objects.filter(posterid=vote_posterid)
-            if poster_queryset:
-                return HttpResponse(json.dumps({"res": "Success!"}, ensure_ascii=False), status=200)
-            else:
-                return HttpResponse(json.dumps({"res": "Failed!"}, ensure_ascii=False), status=401)
+        uicer = UICerPoster.objects.filter(username=username)
+        if len(uicer):
+            poster_id = uicer[0].posterid
+            poster = Poster.objects.get(id=poster_id)
+            data = {}
+            data['title'] = poster.title
+            data['author'] = poster.author
+            data['major'] = poster.major
+            return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
         else:
-            return HttpResponse(json.dumps({"res": "Parameters Not Completed!"}, ensure_ascii=False), status=404)
-    return HttpResponse(status=500)
+            return HttpResponse(json.dumps(poster, ensure_ascii=False), status=201)
+    elif request.method == 'POST' and request.POST:
+        poster_id = request.POST.get('posterid')
+        voteuname = request.POST.get('username')
+        uicer = UICerPoster.objects.filter(username=voteuname)
+        if len(uicer):
+            uicer[0].posterid = poster_id
+            uicer[0].save()
+        else:
+            UICerPoster.objects.create(username=voteuname, posterid=poster_id)
+        poster = Poster.objects.get(id=poster_id)
+        poster.voteNum += 1
+        poster.save()
+        return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
 
 ###################################################
 ###################################################

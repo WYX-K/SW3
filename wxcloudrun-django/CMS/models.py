@@ -17,7 +17,7 @@ from django.db import models
 
 
 class UserInfo(models.Model):
-    username = models.CharField("Username", max_length=20, default="")
+    username = models.CharField("Username", max_length=100, default="")
     pwd = models.CharField("Password", max_length=100, default="")
     role = models.CharField("Role", max_length=100, default="")
     major = models.CharField("Major", max_length=100, default="")
@@ -37,10 +37,9 @@ class UserInfo(models.Model):
 
 
 class UICerPoster(models.Model):
-    username = models.CharField("Username", max_length=20, default="")
+    username = models.CharField("Username", max_length=100, default="")
     posterid = models.IntegerField("Poster ID", default=0)
     luckydraw = models.CharField("Lucky Draw", max_length=100, default="")
-    voteStatus = models.IntegerField("Vote Status", default=0)
 
     class Meta:
         verbose_name = "UICerPoster"
@@ -61,7 +60,7 @@ class Poster(models.Model):
     file = models.BinaryField("File")
     major = models.CharField("Major", max_length=100, default="")
     author = models.CharField("Author", max_length=100, default="")
-    author_email = models.CharField("Username", max_length=20, default="")
+    author_email = models.CharField("Username", max_length=100, default="")
     isGraded = models.IntegerField("IsGraded", default=0)
     voteNum = models.IntegerField("Vote Num", default=0)
     grade = models.IntegerField("Grade", default=0)
@@ -80,7 +79,7 @@ class Poster(models.Model):
 
 
 class PrePoster(models.Model):
-    username = models.CharField("Username", max_length=20, default="")
+    username = models.CharField("Username", max_length=100, default="")
     posterid = models.IntegerField("Poster ID", default=0)
 
     class Meta:
@@ -97,7 +96,7 @@ class PrePoster(models.Model):
 
 
 class JudgePoster(models.Model):
-    username = models.CharField("Username", max_length=20, default="")
+    username = models.CharField("Username", max_length=100, default="")
     poster = models.CharField("Poster", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")
@@ -120,7 +119,7 @@ class JudgePoster(models.Model):
 
 
 class HeadPoster(models.Model):
-    username = models.CharField("Username", max_length=20, default="")
+    username = models.CharField("Username", max_length=100, default="")
     poster = models.CharField("Poster", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")
