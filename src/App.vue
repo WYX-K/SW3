@@ -13,13 +13,13 @@ import { useUserStore } from '@/store'
 import { RoleType } from './store/modules/user/types'
 
 onMounted(() => {
-  const { setIsLogin, setRole, setName, setUsername } = useUserStore()
-
+  const { setIsLogin, setRole, setName, setUsername, setMajor } = useUserStore()
   if (sessionStorage.getItem('TOKEN')) {
     setIsLogin(true)
     setRole(sessionStorage.getItem('ROLE') as RoleType)
     setName(sessionStorage.getItem('NAME') as string)
     setUsername(sessionStorage.getItem('USERNAME') as string)
+    setMajor(sessionStorage.getItem('MAJOR') as string)
   }
 })
 

@@ -9,7 +9,8 @@ const useUserStore = defineStore('user', {
     name: undefined,
     username: undefined,
     role: 'uicer',
-    isLogin: false
+    isLogin: false,
+    major: '',
   }),
 
   getters: {
@@ -44,6 +45,10 @@ const useUserStore = defineStore('user', {
       this.role = role
     },
 
+    setMajor(major: string) {
+      this.major = major
+    },
+    
     async login(prama: FormData) {
       const res = await getLoginData(prama)
       if (res.status === 200) {

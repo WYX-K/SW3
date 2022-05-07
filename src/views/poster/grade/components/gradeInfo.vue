@@ -2,7 +2,7 @@
   <a-col class="banner">
     <a-row justify="center" align="center">
       <a-col :span="8">
-        <a-card hoverable :style="{ width: '300px', height: '580px' }">
+        <a-card hoverable :style="{ width: '300px', height: '550px' }">
           <template #cover>
             <div
               :style="{
@@ -14,14 +14,15 @@
                 width="100%"
                 height="100%"	
                 alt="poster"
-                src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp"
+                :src="post.record.url"
               />
             </div>
           </template>
-          <a-card-meta :title="data.record.title">
+          <a-card-meta :title="post.record.title">
             <template #description>
-              Card content <br />
-              Card content
+              {{ post.record.author }}
+              {{ post.record.major }}<br>
+              {{ post.record.summary }}
             </template>
           </a-card-meta>
         </a-card>
@@ -66,7 +67,9 @@
 <script setup lang="ts">
 import { reactive, onActivated, computed } from 'vue'
 import { useI18n } from 'vue-i18n/index'
-import { useGradeStore, useUserStore } from '@/store'
+import consola from 'consola'
+import { useUserStore } from '@/store'
+import { postGrade } from '@/api/grade'
 
 const { t } = useI18n()
 
@@ -74,13 +77,14 @@ const emits = defineEmits(['onClick'])
 const goBack = () => {
   emits('onClick', false)
 }
-const data = reactive({
+const post = reactive({
   record: {
     title: '',
     author: '',
     summary: '',
     major: '',
     url: '',
+    id: '',
   },
 })
 
@@ -119,13 +123,22 @@ const formdata = computed(() => ({
   oral_presentation: silderdata[4].data,
 }))
 onActivated(() => {
-  const gradeStore = useGradeStore()
-  console.log(gradeStore.getRecord())
-  data.record = gradeStore.getRecord()
+  post.record = JSON.parse(sessionStorage.getItem('POSTER') as string)
 })
 
 const handleSubmit = () => {
-  console.log(formdata.value)
+  const data = new FormData()
+  data.append('visual_layout', formdata.value.visual_layout.toString())
+  data.append('poster_organization', formdata.value.poster_organization.toString())
+  data.append('poster_content', formdata.value.poster_content.toString())
+  data.append('written_language', formdata.value.written_language.toString())
+  data.append('oral_presentation', formdata.value.oral_presentation.toString())
+  data.append('id', post.record.id)
+  try {
+    const res = postGrade(data)
+  } catch (e) {
+    consola.error(e)
+  }
 }
 
 const userStore = useUserStore()

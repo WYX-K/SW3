@@ -178,7 +178,7 @@ const getVotedItem = async () => {
 const pagination = reactive({
   pageSize: 6,
   current: 1,
-  total: data.list.length,
+  total: 0,
   hideOnSinglePage: true
 })
 const loading = ref(false)

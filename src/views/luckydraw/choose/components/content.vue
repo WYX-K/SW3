@@ -52,11 +52,9 @@ const pagination = reactive({
 
 const onLuckydraw = async () => {
   try {
-    const res = await postLuckyDraw()
-    if (res.status === 200) {
-      Message.success(t('luckydraw.choose.success'))
-      getLuckyDrawList()
-    }
+    await postLuckyDraw()
+    Message.success(t('luckydraw.choose.success'))
+    getLuckyDrawList()
   } catch (e) {
     consola.error(e)
   }

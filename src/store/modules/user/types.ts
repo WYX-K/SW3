@@ -4,4 +4,5 @@ export interface UserState {
   username?: string;
   role: RoleType;
   isLogin: boolean;
+  major?: string;
 }
