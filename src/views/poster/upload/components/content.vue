@@ -18,7 +18,11 @@
         :rules="[{required:true,message: t('upload.title.tip')}]"
         :validate-trigger="['change','input']"
       >
-        <a-input v-model="form.title" :placeholder="t('upload.title.tip')" />
+        <a-input v-model="form.title" :placeholder="t('upload.title.tip')">
+          <template #append>
+            @mail.uic.edu.cn
+          </template>
+        </a-input>
       </a-form-item>
       <a-form-item
         field="author"
@@ -52,6 +56,7 @@
           <a-option value="STAT">STAT</a-option>
           <a-option value="APSY">APSY</a-option>
           <a-option value="ENVS">ENVS</a-option>
+          <a-option value="FST">FST</a-option>
         </a-select>
       </a-form-item>
       <a-form-item 
