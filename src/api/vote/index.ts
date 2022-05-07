@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { AxiosRequestConfig } from 'axios'
 import axios from '@/api/axios'
 
-export function getVote(prama: FormData) {
-  // @ts-ignore
+export function getVote(prama: AxiosRequestConfig) {
   return axios.get('/api/vote', prama)
 }
 

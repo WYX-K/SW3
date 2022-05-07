@@ -320,6 +320,7 @@ const getPosterList = async () => {
   const params = {
     pageNum: pagination.current - 1,
     pageSize: pagination.pageSize,
+    major: 'all',
   }
   try {
     loading.value = true

@@ -18,7 +18,7 @@ export default {
   'menu.poster.grade': '评分',
   'menu.luckydraw.choose': '选择',
   'navbar.action.locale': '切换为中文',
-  'navbar.search.placeholder': '请输入关键字',
+  'navbar.search.placeholder': '请输入标题的关键字',
   ...localeSettings,
   ...localeLogin,
   ...localeHome,

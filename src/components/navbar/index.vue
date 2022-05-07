@@ -17,17 +17,6 @@
     </div>
     <ul class="right-side">
       <li>
-        <a-input-search
-          v-if="isSearchShow"
-          :style="{width:'320px'}"
-          :loading="isLoading"
-          :placeholder="t('navbar.search.placeholder')"
-          allow-clear
-          @change="onSearch"
-          @search="onSearch"
-        />
-      </li>
-      <li>
         <a-tooltip :content="t('settings.language')">
           <a-button
             class="nav-btn"
@@ -115,7 +104,6 @@ import useLocale from '@/hooks/locale'
 import { LOCALE_OPTIONS } from '@/locale'
 import useUser from '@/hooks/user'
 import { useAppStore, useUserStore } from '@/store'
-import { listenerRouteChange } from '@/utils/route-listener'
 
 const role = computed(() => {
   const { getRole } = useUserStore()
@@ -136,20 +124,6 @@ const role = computed(() => {
       return '*'
   }
 })
-
-const isLoading = ref(false)
-const isSearchShow = ref(false)
-listenerRouteChange((newRoute) => {
-  if (newRoute.name === 'show&vote' || newRoute.name === 'edit') {
-    isSearchShow.value = true
-  } else {
-    isSearchShow.value = false
-  }
-}, true)
-
-const onSearch = (value: string) => {
-  console.log(value)
-}
 
 const triggerBtn = ref()
 const { changeLocale } = useLocale()

@@ -1,6 +1,6 @@
 export default {
   'poster.sureVote.title': '提示',
-  'poster.sureVote.content': '确认投票吗？',
+  'poster.sureVote.content': '确认投票给',
   'poster.modal.confirm': '确认',
   'poster.modal.cancel': '取消',
   'poster.actionBtn.title': '投票',
@@ -16,4 +16,5 @@ export default {
   'poster.vote.welcome': '欢迎投票',
   'poster.filter.reset': '重置',
   'poster.filter.confirm': '确认',
+  'poster.vote.success': '投票成功',
 }

@@ -112,7 +112,8 @@ const rules = [{
     if (form.fileList.length === 0) {
       cb(t('upload.image.tip'))
     }
-  }
+  },
+  required: true
 }]
 const uploadPosterInfo = async (form: any) => {
   const data = new FormData()

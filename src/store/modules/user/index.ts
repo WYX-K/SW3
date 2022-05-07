@@ -36,6 +36,10 @@ const useUserStore = defineStore('user', {
       this.name = name
     },
 
+    setUsername(username: string) {
+      this.username = username
+    },
+
     setRole(role: RoleType) {
       this.role = role
     },
@@ -48,6 +52,7 @@ const useUserStore = defineStore('user', {
         this.username = res.data.username
         sessionStorage.setItem('ROLE', res.data.role)
         sessionStorage.setItem('USERNAME', res.data.username)
+        sessionStorage.setItem('NAME', res.data.name)
         sessionStorage.setItem('MAJOR', res.data.major)
         setToken('USER')
         this.isLogin = true

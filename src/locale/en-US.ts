@@ -18,7 +18,7 @@ export default {
   'menu.poster.edit': 'Edit',
   'menu.poster.grade': 'Grade',
   'menu.luckydraw.choose': 'Choose',
-  'navbar.search.placeholder': 'Please enter the keyword',
+  'navbar.search.placeholder': 'Please enter the keywords of title',
   ...localeSettings,
   ...localeLogin,
   ...localeHome,

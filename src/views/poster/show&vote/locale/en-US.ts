@@ -1,6 +1,6 @@
 export default {
   'poster.sureVote.title': 'Tip',
-  'poster.sureVote.content': 'Confirm vote?',
+  'poster.sureVote.content': 'Confirm vote ',
   'poster.modal.confirm': 'Confirm',
   'poster.modal.cancel': 'Cancel',
   'poster.actionBtn.title': 'Vote',
@@ -16,4 +16,5 @@ export default {
   'poster.vote.welcome': 'Welcome to vote',
   'poster.filter.reset': 'Reset',
   'poster.filter.confirm': 'Confirm',
+  'poster.vote.success': 'Vote success',
 }

@@ -5,7 +5,10 @@ export const showMessage = (status:number|string) : string => {
       message = 'Request Error(400)'
       break
     case 401:
-      message = 'Access Denied(403)'
+      message = 'Access Denied(401)'
+      break
+    case 402:
+      message = 'Request Fail(402)'
       break
     case 404:
       message = 'Request Error(404)'
