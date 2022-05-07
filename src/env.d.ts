@@ -12,6 +12,7 @@ interface ImportMetaEnv {
 }
 
 declare module 'mockjs'
+declare module 'qs'
 declare module 'vue-i18n/index'
 declare module 'nprogress'
 declare module 'consola/src/browser'

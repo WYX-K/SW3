@@ -33,7 +33,7 @@
           <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
         </template>
         <template #action="{ record }">
-          <a-button type="outline" status="success" @click="onEdit(record)">{{ t('poster.editBtn.title') }}</a-button>
+          <a-button type="outline" status="success" @click="onEdit(record.id)">{{ t('poster.editBtn.title') }}</a-button>
         </template>
       </a-table>
     </a-spin>
@@ -68,7 +68,6 @@
       <a-form-item
         field="title"
         :label="t('upload.title.label')"
-        :rules="[{required:true,message: t('upload.title.tip')}]"
         :validate-trigger="['change','input']"
       >
         <a-input v-model="form.title" :placeholder="t('upload.title.tip')" />
@@ -76,15 +75,24 @@
       <a-form-item
         field="author"
         :label="t('upload.author.label')"
-        :rules="[{required:true, message:t('upload.author.tip')}]"
         :validate-trigger="['change','input']"
       >
         <a-input v-model="form.author" :placeholder="t('upload.author.tip')" />
       </a-form-item>
+      <a-form-item
+        field="authorEmail"
+        :label="t('upload.authorEmail.label')"
+        :validate-trigger="['change','input']"
+      >
+        <a-input v-model="form.authorEmail" :placeholder="t('upload.authorEmail.tip')">
+          <template #append>
+            @mail.uic.edu.cn
+          </template>
+        </a-input>
+      </a-form-item>
       <a-form-item 
         field="major" 
         :label="t('upload.major.label')" 
-        :rules="[{required:true, message:t('upload.major.tip')}]"
       >
         <a-select v-model="form.major" :placeholder="t('upload.major.tip')">
           <a-option value="CST">CST</a-option>
@@ -93,12 +101,12 @@
           <a-option value="STAT">STAT</a-option>
           <a-option value="APSY">APSY</a-option>
           <a-option value="ENVS">ENVS</a-option>
+          <a-option value="FST">FST</a-option>
         </a-select>
       </a-form-item>
       <a-form-item 
         field="summary" 
         :label="t('upload.summary.label')" 
-        :rules="[{required:true, message:t('upload.summary.tip')}]"
       >
         <a-textarea 
           v-model="form.summary" 
@@ -109,7 +117,6 @@
       </a-form-item>
       <a-form-item 
         field="upload" 
-        :rules="[{required:true, message:t('upload.image.tip')}]"
       >
         <a-upload
           v-model:file-list="form.fileList"
@@ -136,22 +143,12 @@ import { ref, reactive, h, computed, onMounted } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Message, Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
+import qs from 'qs'
 import consola from 'consola'
-import { getPoster, deletePoster } from '@/api/poster'
+import { getPoster, deletePoster, editPoster } from '@/api/poster'
 
 const { t } = useI18n()
-const selectedKeys = ref([])
-const onRowSelect = (rowKeys:string[]) => {
-  console.log(selectedKeys.value)
-}
-const rowSelection = {
-  type: 'checkbox',
-  showCheckedAll: true
-}
-const onDeletePoster = () => {
-  console.log(selectedKeys.value)
-}
-const isBtnShow = computed(() => true)
+const formRef = ref()
 const columns = [
   {
     title: computed(() => t('poster.table.title')),
@@ -219,7 +216,32 @@ const columns = [
 const data = reactive({
   list: [],
 })
+const rowSelection = {
+  type: 'checkbox',
+}
 
+// 删除海报
+const selectedKeys = ref([])
+const onRowSelect = (rowKeys: never[]) => {
+  selectedKeys.value = rowKeys
+}
+const onDeletePoster = async () => {
+  const data = qs.stringify({
+    ids: selectedKeys.value,
+  }, { arrayFormat: 'brackets' })
+  try {
+    const res = await deletePoster({ data })
+    if (res.status === 200) {
+      await getPosterList()
+      Message.success(t('poster.delete.success'))
+    }
+  } catch (e) {
+    consola.error(e)
+  }
+}
+const isBtnShow = computed(() => selectedKeys.value.length > 0)
+
+// 展示海报
 const visible = ref(false)
 const imgurl = ref('')
 const onShowImg = (url: string) => {
@@ -227,20 +249,50 @@ const onShowImg = (url: string) => {
   visible.value = true
 }
 
+// 修改海报
 const isShowModel = ref(false)
 const form = reactive({
   id: '',	
   title: '',
-  author: '',
+  author: '',    
   major: '',
   summary: '',
+  authorEmail: '',
   fileList: [],
 })
-const onEdit = (item: object) => {
+const changeItemID = ref(0)
+const onEdit = (item: number) => {
+  changeItemID.value = item
   isShowModel.value = true
 }
-const uploadPosterInfo = async (form: any) => {
-  consola.success(form)
+const changePosterInfo = async (form: any) => {
+  let authorEmail = `${ form.authorEmail }@mail.uic.edu.cn`
+  let file = ''
+  if (!form.authorEmail) {
+    authorEmail = ''
+  }
+  if (form.fileList.length > 0) {
+    file = form.fileList[0].file
+  }
+  const data = new FormData()
+  data.append('title', form.title)
+  data.append('author', form.author)
+  data.append('major', form.major)
+  data.append('summary', form.summary)
+  data.append('file', file)
+  data.append('author_email', authorEmail)
+  data.append('id', changeItemID.value.toString())
+  try {
+    const res = await editPoster(data)
+    if (res.status === 200) {
+      Message.success(t('poster.edit.success'))
+      isShowModel.value = false
+      getPosterList()
+      formRef.value.resetFields()
+    }
+  } catch (e) {
+    consola.error(e)
+  }
 }
 const handleSubmit = (e: any) => {
   if (typeof (e.errors) === 'undefined') {
@@ -250,23 +302,19 @@ const handleSubmit = (e: any) => {
       okText: t('poster.modal.confirm'),
       cancelText: t('poster.modal.cancel'),
       onOk: () => {
-        uploadPosterInfo(e.values)
-        form.title = ''
-        form.author = ''
-        form.major = ''
-        form.summary = ''
-        form.fileList = []
+        changePosterInfo(e.values)
       }
     })
   }
 }
+
+// 获取列表
 const pagination = reactive({
   pageSize: 6,
   current: 1,
   total: data.list.length,
   hideOnSinglePage: true
 })
-
 const loading = ref(false)
 const getPosterList = async () => {
   const params = {
@@ -285,8 +333,8 @@ const getPosterList = async () => {
       pagination.total = res.data[0].total
       Message.success(t('poster.get.success'))
     }
-  } catch (err) {
-    console.log(err)
+  } catch (e) {
+    consola.error(e)
   }
   loading.value = false
 }
