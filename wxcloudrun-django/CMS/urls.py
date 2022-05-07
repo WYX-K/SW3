@@ -29,7 +29,7 @@ urlpatterns = (
     path('admin/', admin.site.urls),
     url(r'login', CMSviews.logIn),
     url(r'vote', CMSviews.vote),
-    url(r'chooseLuckydraw', CMSviews.chooseLuckydraw),
+    url(r'luckydraw', CMSviews.luckydraw),
     url(r'poster', CMSviews.poster),
     url(r'editPoster', CMSviews.editPoster),
 )

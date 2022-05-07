@@ -74,23 +74,6 @@ class Poster(models.Model):
 
 
 '''
-    Pre Poster Table
-'''
-
-
-class PrePoster(models.Model):
-    username = models.CharField("Username", max_length=100, default="")
-    posterid = models.IntegerField("Poster ID", default=0)
-
-    class Meta:
-        verbose_name = "PrePoster"
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username
-
-
-'''
     Judge Poster
 '''
 

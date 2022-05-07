@@ -6,6 +6,7 @@ LastEditors: Please set LastEditors
 Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 FilePath: /wxcloudrun-django/CMS/views.py
 '''
+from ast import Return
 import base64
 import json
 from django.http import HttpResponse, QueryDict
@@ -14,6 +15,7 @@ from .models import *
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
+from django.db.models import Q
 import random
 
 # Create your views here.
@@ -60,9 +62,8 @@ def logIn(request):
                 }
                 return HttpResponse(json.dumps(user_temp, ensure_ascii=False), status=200)
         else:
-            return HttpResponse(status=404)
-    else:
-        return HttpResponse(status=500)
+            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=404)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=404)
 
 
 def sendMail(username, pwd):
@@ -210,8 +211,6 @@ def editPoster(request):
 '''
 api: /vote
 method: POST/GET
-param {username} request
-return {posterdata}
 '''
 
 
@@ -251,40 +250,61 @@ def vote(request):
 
 
 '''
-api: /chooseLuckydraw
-description: choose luckydraw
-param {} request
-return {name, rank}
+api: /luckydraw
+method: POST/GET
 '''
 
 
-def chooseLuckydraw(request):
-    data = []
-    user_queryset = UserInfo.objects.all()
-    user_list = []
+def luckydraw(request):
+    if request.method == 'POST':
+        user_queryset = UICerPoster.objects.all()
+        user_list = []
 
-    # get all username
-    for user in user_queryset:
-        user_list.append(user.username)
-    user_len = len(user_list)
-
-    # get random num
-    rank1_num = random.randint(0, user_len - 1)
-    rank1_user = user_list[rank1_num]
-    rank2_num = random.randint(0, user_len - 1)
-    while rank1_num == rank2_num:
-        rank2_num = random.randint(0, user_len - 1)
-    rank2_user = user_list[rank2_num]
-    rank3_num = random.randint(0, user_len - 1)
-    while rank3_num == rank1_num or rank3_num == rank2_num:
-        rank3_num = random.randint(0, user_len - 1)
-    rank3_user = user_list[rank3_num]
-
-    p_temp = {
-        "First": rank1_user,
-        "Second": rank2_user,
-        "Third": rank3_user
-    }
-    data.append(p_temp)
-
-    return HttpResponse(json.dumps({"status": 200, "msg": "OK!", "data": data}, ensure_ascii=False))
+        # get all username
+        for user in user_queryset:
+            user_list.append(user.username)
+        user_len = len(user_list)
+        if user_len > 3:
+            # get random num
+            rank1_num = random.randint(0, user_len - 1)
+            rank1_user = user_list[rank1_num]
+            rank2_num = random.randint(0, user_len - 1)
+            while rank1_num == rank2_num:
+                rank2_num = random.randint(0, user_len - 1)
+            rank2_user = user_list[rank2_num]
+            rank3_num = random.randint(0, user_len - 1)
+            while rank3_num == rank1_num or rank3_num == rank2_num:
+                rank3_num = random.randint(0, user_len - 1)
+            rank3_user = user_list[rank3_num]
+            uicer = UICerPoster.objects.get(username=rank1_user)
+            uicer.luckydraw = 'FIRST'
+            uicer.save()
+            uicer = UICerPoster.objects.get(username=rank2_user)
+            uicer.luckydraw = 'SECOND'
+            uicer.save()
+            uicer = UICerPoster.objects.get(username=rank3_user)
+            uicer.luckydraw = 'THIRD'
+            uicer.save()
+            data = {
+                "1": rank1_user,
+                "2": rank2_user,
+                "3": rank3_user
+            }
+            return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
+        return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=404)
+    elif request.method == 'GET':
+        uicers = UICerPoster.objects.filter(
+            Q(luckydraw='FIRST') | Q(luckydraw='SECOND') | Q(luckydraw='THIRD'))
+        if len(uicers):
+            data = []
+            for uicer in uicers:
+                temp = {}
+                temp['name'] = UserInfo.objects.get(
+                    username=uicer.username).name
+                temp['username'] = uicer.username
+                temp['luckydraw'] = uicer.luckydraw
+                data.append(temp)
+            return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
+        else:
+            return HttpResponse(status=201)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)

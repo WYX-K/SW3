@@ -13,7 +13,5 @@ from .models import *
 admin.site.register(UserInfo)  # register UserInfo Table
 admin.site.register(UICerPoster)  # register UICerPoster Table
 admin.site.register(Poster)  # register Poster Table
-admin.site.register(PrePoster)  # register PrePoster Table
 admin.site.register(JudgePoster)  # register JudgePoster Table
 admin.site.register(HeadPoster)  # register HeadPoster Table
-
