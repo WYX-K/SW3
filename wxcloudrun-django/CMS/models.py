@@ -61,9 +61,8 @@ class Poster(models.Model):
     major = models.CharField("Major", max_length=100, default="")
     author = models.CharField("Author", max_length=100, default="")
     author_email = models.CharField("Username", max_length=100, default="")
-    isGraded = models.IntegerField("IsGraded", default=0)
     voteNum = models.IntegerField("Vote Num", default=0)
-    grade = models.IntegerField("Grade", default=0)
+    grade = models.FloatField("Grade", default=0.0)
 
     class Meta:
         verbose_name = "Poster"
@@ -79,6 +78,7 @@ class Poster(models.Model):
 
 
 class JudgePoster(models.Model):
+    judge = models.CharField("Judge", max_length=1000, default="")
     poster = models.CharField("Poster", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")
@@ -86,6 +86,7 @@ class JudgePoster(models.Model):
     poster_content = models.FloatField("Poster Content", default=0.0)
     written_language = models.FloatField("Written Language", default=0.0)
     oral_presentation = models.FloatField("Oral Presentation", default=0.0)
+    average = models.FloatField("Average", default=0.0)
 
     class Meta:
         verbose_name = "JudgePoster"
@@ -102,6 +103,7 @@ class JudgePoster(models.Model):
 
 class HeadPoster(models.Model):
     poster = models.CharField("Poster", max_length=1000, default="")
+    judge = models.CharField("Judge", max_length=1000, default="")
     visual_layout = models.CharField(
         "Visual Layout", max_length=100, default="")
     poster_organization = models.FloatField("Poster Organization", default=0.0)

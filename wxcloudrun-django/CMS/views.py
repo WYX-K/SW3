@@ -6,10 +6,8 @@ LastEditors: Please set LastEditors
 Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 FilePath: /wxcloudrun-django/CMS/views.py
 '''
-from ast import Return
 import base64
 import json
-import re
 from django.http import HttpResponse, QueryDict
 import logging
 from .models import *
@@ -44,7 +42,6 @@ def logIn(request):
     username = request.POST.get('username')
     pwd = request.POST.get('pwd')
     isChecked = request.POST.get('isChecked')
-    logger.info('Login Username: {}, Login PWD: {}'.format(username, pwd))
 
     users = UserInfo.objects.filter(username=username)
     if len(users) != 0:
@@ -153,6 +150,33 @@ def poster(request):
             posters = Poster.objects.all()
             total = len(posters)
             posters = posters[num:num+pageSize]
+        elif major == 'DST':
+            posters = Poster.objects.all()
+            isAllGraded = True
+            for poster in posters:
+                if poster.grade == 0:
+                    isAllGraded = False
+                    break
+            if isAllGraded:
+                posters_major = Poster.objects.values(
+                    'major').order_by('major').distinct()
+                data = []
+                for poster_major in posters_major:
+                    major = poster_major.get('major')
+                    posters = Poster.objects.filter(
+                        major=major).order_by('-grade')
+                    temp = {}
+                    temp['id'] = posters[0].id
+                    temp['title'] = posters[0].title
+                    temp['author'] = posters[0].author
+                    temp['author_email'] = posters[0].author_email
+                    temp['summary'] = posters[0].summary
+                    temp['major'] = posters[0].major
+                    url = str(base64.b64encode(posters[0].file), 'utf8')
+                    temp['url'] = url
+                    data.append(temp)
+                return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
+            return HttpResponse(json.dumps({"res": "no data"}, ensure_ascii=False), status=201)
         else:
             posters = Poster.objects.filter(major=major)
             total = len(posters)
@@ -326,16 +350,44 @@ method: POST/GET
 
 def grade(request):
     if request.method == 'POST' and request.POST:
+        judgename = request.POST.get('judgename')
+        role = request.POST.get('role')
         posterid = request.POST.get('id')
-        visual_layout = request.POST.get('visual_layout')
-        poster_organization = request.POST.get('poster_organization')
-        poster_content = request.POST.get('poster_content')
-        written_language = request.POST.get('written_language')
-        oral_presentation = request.POST.get('oral_presentation')
-        poster = Poster.objects.get(id=posterid)
-        poster.isGraded = 1
-        poster.save()
-        JudgePoster.objects.create(poster=posterid, visual_layout=visual_layout, poster_content=poster_content,
-                                   poster_organization=poster_organization, written_language=written_language, oral_presentation=oral_presentation)
+        visual_layout = float(request.POST.get('visual_layout'))
+        poster_organization = float(request.POST.get('poster_organization'))
+        poster_content = float(request.POST.get('poster_content'))
+        written_language = float(request.POST.get('written_language'))
+        oral_presentation = float(request.POST.get('oral_presentation'))
+        aver = (visual_layout + poster_organization +
+                poster_content + written_language + oral_presentation) / 5
+        if role == 'judge':
+            judgeposters = JudgePoster.objects.filter(
+                Q(judge=judgename) & Q(poster=posterid))
+            if len(judgeposters) != 0:
+                judgeposters.delete()
+            JudgePoster.objects.create(average=aver, judge=judgename, poster=posterid, visual_layout=visual_layout, poster_content=poster_content,
+                                       poster_organization=poster_organization, written_language=written_language, oral_presentation=oral_presentation)
+            judgeposters = JudgePoster.objects.filter(poster=posterid)
+            if len(judgeposters) == 2:
+                aver = (judgeposters[0].average + judgeposters[1].average) / 2
+                poster = Poster.objects.get(id=posterid)
+                poster.grade = aver
+                poster.save()
+        elif role == 'head_judge':
+            headposters = HeadPoster.objects.filter(
+                Q(judge=judgename) & Q(poster=posterid))
+            if len(headposters) != 0:
+                headposters.delete()
+            HeadPoster.objects.create(judge=judgename, poster=posterid, visual_layout=visual_layout, poster_content=poster_content,
+                                      poster_organization=poster_organization, written_language=written_language, oral_presentation=oral_presentation)
         return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+    if request.method == 'GET' and request.GET:
+        judgename = request.GET.get('judgename')
+        judgeposters = JudgePoster.objects.filter(judge=judgename)
+        if len(judgeposters) != 0:
+            data = []
+            for judgeposter in judgeposters:
+                data.append(judgeposter.poster)
+            return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
+        return HttpResponse(status=201)
     return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
