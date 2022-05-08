@@ -16,4 +16,5 @@ export default {
   'upload.authorid.label': '作者邮箱：',
   'upload.authorEmail.tip': '请输入作者邮箱',
   'upload.success': '上传成功',
+  'upload.fail': '上传失败，海报重复，请重试',
 }

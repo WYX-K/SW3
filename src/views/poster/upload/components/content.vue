@@ -132,6 +132,8 @@ const uploadPosterInfo = async (form: any) => {
     form.summary = ''
     form.fileList = []
     form.authorEmail = ''
+  } else if (res.status === 205) {
+    Message.warning(t('upload.fail'))
   }
 }
 const handleSubmit = (e: any) => {

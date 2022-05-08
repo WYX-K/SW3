@@ -16,4 +16,5 @@ export default {
   'upload.authorEmail.label': 'Author Email:',
   'upload.authorEmail.tip': 'Input author email',
   'upload.success': 'Upload success',
+  'upload.fail': 'Upload fail, poster repeat, please try again',
 }
