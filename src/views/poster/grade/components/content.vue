@@ -176,6 +176,7 @@ const handlePageChange = (page: number) => {
 const getGradeList = async () => {
   const params = {
     judgename: userStore.username,
+    role: userStore.role,
   }
   try {
     const res = await getGrade({ params })
@@ -202,7 +203,6 @@ onMounted(async () => {
 onActivated(() => {
   if (n === 1) {
     getGradeList()
-    n = 0
   }
 })
 </script>

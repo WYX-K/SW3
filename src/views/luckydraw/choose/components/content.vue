@@ -63,6 +63,7 @@ const getLuckyDrawList = async () => {
   const res = await getLuckyDraw()
   if (res.status === 200) {
     data.list = res.data
+    isLuckydraw.value = false
   } else {
     isLuckydraw.value = true
   }

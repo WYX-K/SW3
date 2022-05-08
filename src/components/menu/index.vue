@@ -1,14 +1,4 @@
+<template><div></div></template>
 <script lang="tsx" src="./setup.tsx"/>
 <style lang="less" scoped>
-  :deep(.arco-menu-inner) {
-    .arco-menu-inline-header {
-      display: flex;
-      align-items: center;
-    }
-    .arco-icon {
-      &:not(.arco-icon-down) {
-        font-size: 18px;
-      }
-    }
-  }
 </style>
