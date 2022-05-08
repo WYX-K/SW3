@@ -29,6 +29,7 @@
       </a-col>
       <a-col :span="12">
         <a-form
+          ref="formRef"
           :model="formdata"
           auto-label-width
           @submit="handleSubmit"
@@ -65,16 +66,20 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onActivated, computed } from 'vue'
+import { reactive, onActivated, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
+import { Message } from '@arco-design/web-vue'
 import { useUserStore } from '@/store'
 import { postGrade } from '@/api/grade'
 
 const { t } = useI18n()
-
+const formRef = ref()
 const emits = defineEmits(['onClick'])
 const goBack = () => {
+  for (const silder of silderdata) {
+    silder.data = 0
+  }
   emits('onClick', false)
 }
 const post = reactive({
@@ -126,7 +131,8 @@ onActivated(() => {
   post.record = JSON.parse(sessionStorage.getItem('POSTER') as string)
 })
 
-const handleSubmit = () => {
+const userStore = useUserStore()
+const handleSubmit = async () => {
   const data = new FormData()
   data.append('visual_layout', formdata.value.visual_layout.toString())
   data.append('poster_organization', formdata.value.poster_organization.toString())
@@ -134,27 +140,16 @@ const handleSubmit = () => {
   data.append('written_language', formdata.value.written_language.toString())
   data.append('oral_presentation', formdata.value.oral_presentation.toString())
   data.append('id', post.record.id)
+  data.append('role', userStore.role)
+  data.append('judgename', sessionStorage.getItem('USERNAME') as string)
   try {
-    const res = postGrade(data)
+    const res = await postGrade(data)
+    if (res.status === 200) {
+      Message.success(t('poster.grade.success'))
+    }
   } catch (e) {
     consola.error(e)
   }
-}
-
-const userStore = useUserStore()
-const judgeGrade = () => {
-  console.log(userStore.getRole())
-}
-const deanGrade = () => {
-  console.log(userStore.getRole())
-}
-switch (userStore.getRole()) {
-  case 'judge':
-    judgeGrade()
-    break
-  case 'dean':
-    deanGrade()
-    break
 }
 
 </script>

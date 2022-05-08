@@ -9,4 +9,7 @@ export default {
   'poster.grade.oral_presentation': 'Oral presentation',
   'poster.grade.submit': 'Submit',
   'poster.grade.goback': 'Go back',
+  'poster.grade.success': 'Grade success',
+  'poster.graded': 'Graded',
+  'poster.get.fail': 'You can not grade now',
 }

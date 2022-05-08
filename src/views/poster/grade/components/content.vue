@@ -30,7 +30,7 @@
           <a-button @click="onShowImg(record.url)">{{ t('poster.imageBtn.title') }}</a-button>
         </template>
         <template #action="{ record }">
-          <a-button type="outline" status="success" @click="onGrade(record)">{{ t('poster.grade') }}</a-button>
+          <a-button type="outline" status="success" @click="onGrade(record)">{{ record.grade?t('poster.graded'):t('poster.grade') }}</a-button>
         </template>
       </a-table>
     </a-spin>
@@ -42,12 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, h, computed, onMounted } from 'vue'
+import { ref, reactive, h, computed, onMounted, onActivated } from 'vue'
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { Message, Modal } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n/index'
 import consola from 'consola'
 import { getPoster } from '@/api/poster'
+import { useUserStore } from '@/store'
+import { getGrade } from '@/api/grade'
 
 const { t } = useI18n()
 
@@ -134,17 +136,19 @@ const onGrade = (record: any) => {
 
 // 获取列表
 const pagination = reactive({
-  pageSize: 6,
+  pageSize: 7,
   current: 1,
   total: 0,
   hideOnSinglePage: true
 })
 const loading = ref(false)
+const userStore = useUserStore()
 const getPosterList = async () => {
+  const major = userStore.role === 'judge' ? sessionStorage.getItem('MAJOR') : 'DST'
   const params = {
     pageNum: pagination.current - 1,
     pageSize: pagination.pageSize,
-    major: sessionStorage.getItem('MAJOR'),
+    major,
   }
   try {
     loading.value = true
@@ -157,6 +161,8 @@ const getPosterList = async () => {
       })
       pagination.total = res.data[0].total
       Message.success(t('poster.get.success'))
+    } else if (res.status === 201) {
+      Message.error(t('poster.get.fail'))
     }
   } catch (e) {
     consola.error(e)
@@ -167,8 +173,37 @@ const handlePageChange = (page: number) => {
   pagination.current = page
   getPosterList()
 }
-onMounted(() => {
-  getPosterList()
+const getGradeList = async () => {
+  const params = {
+    judgename: userStore.username,
+  }
+  try {
+    const res = await getGrade({ params })
+    if (res.status === 200) {
+      data.list.map((item: any) => {
+        if (res.data.includes(item.id.toString())) {
+          item.grade = true
+        } else {
+          item.grade = false
+        }
+        return item
+      })
+    }
+  } catch (e) {
+    consola.error(e)
+  }
+}
+let n = 0
+onMounted(async () => {
+  await getPosterList()
+  getGradeList()
+  n = 1
+})
+onActivated(() => {
+  if (n === 1) {
+    getGradeList()
+    n = 0
+  }
 })
 </script>
 

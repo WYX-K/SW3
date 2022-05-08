@@ -5,6 +5,6 @@ export function postGrade(data: FormData) {
   return axios.post('/api/grade', data)
 }
 
-export function getLuckyDraw(prama: AxiosRequestConfig) {
+export function getGrade(prama: AxiosRequestConfig) {
   return axios.get('/api/grade', prama)
 }

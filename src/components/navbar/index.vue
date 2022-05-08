@@ -106,8 +106,8 @@ import useUser from '@/hooks/user'
 import { useAppStore, useUserStore } from '@/store'
 
 const role = computed(() => {
-  const { getRole } = useUserStore()
-  switch (getRole()) {
+  const userStore = useUserStore()
+  switch (userStore.role) {
     case 'admin':
       return 'Administrator'
     case 'judge':

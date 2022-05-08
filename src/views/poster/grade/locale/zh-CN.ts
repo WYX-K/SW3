@@ -9,4 +9,7 @@ export default {
   'poster.grade.oral_presentation': '报告展示',
   'poster.grade.submit': '提交',
   'poster.grade.goback': '返回',
+  'poster.grade.success': '评分成功',
+  'poster.graded': '已评分',
+  'poster.get.fail': '您现在还不能评分',
 }
