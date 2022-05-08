@@ -383,7 +383,11 @@ def grade(request):
         return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
     if request.method == 'GET' and request.GET:
         judgename = request.GET.get('judgename')
-        judgeposters = JudgePoster.objects.filter(judge=judgename)
+        role = request.GET.get('role')
+        if role == 'judge':
+            judgeposters = JudgePoster.objects.filter(judge=judgename)
+        else:
+            judgeposters = HeadPoster.objects.filter(judge=judgename)
         if len(judgeposters) != 0:
             data = []
             for judgeposter in judgeposters:
