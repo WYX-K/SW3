@@ -135,6 +135,8 @@ def poster(request):
                 title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
             if res:
                 return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+        else:
+            return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=205)
     elif request.method == "DELETE":
         qs = QueryDict(request.body)
         ids = qs.getlist('ids[]')
