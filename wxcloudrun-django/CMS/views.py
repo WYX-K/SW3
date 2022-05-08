@@ -130,11 +130,14 @@ def poster(request):
         file = request.FILES.get('file').read()
         major = request.POST.get('major')
         author_email = request.POST.get('author_email')
-        if len(Poster.objects.filter(author_email=author_email)) == 0:
-            res = Poster.objects.create(
-                title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
-            if res:
-                return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+        if not UserInfo.objects.filter(username=author_email).exists():
+            if len(Poster.objects.filter(author_email=author_email)) == 0:
+                res = Poster.objects.create(
+                    title=title, author=author, author_email=author_email, summary=summary, file=file, major=major)
+                if res:
+                    return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+            else:
+                return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=205)
         else:
             return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=205)
     elif request.method == "DELETE":
@@ -397,3 +400,18 @@ def grade(request):
             return HttpResponse(json.dumps(data, ensure_ascii=False), status=200)
         return HttpResponse(status=201)
     return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+# ###################################################
+# ###################################################
+# # getVotePoster API
+# ###################################################
+
+
+'''
+api: /getVotePoster
+method: GET
+'''
+
+
+def getVotePoster(request):
+    return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
