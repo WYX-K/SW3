@@ -33,5 +33,5 @@ urlpatterns = (
     url(r'poster', CMSviews.poster),
     url(r'editPoster', CMSviews.editPoster),
     url(r'grade', CMSviews.grade),
-    url(r'getVotePoster', CMSviews.getVotePoster),
+    url(r'pVote', CMSviews.pVote),
 )

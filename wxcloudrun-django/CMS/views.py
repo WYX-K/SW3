@@ -30,7 +30,7 @@ logger = logging.getLogger('log')
 api: /login
 description: login
 param {username, pwd} request
-return {username, role, name, major} 
+return {username, role, name, major}
 '''
 
 
@@ -68,7 +68,7 @@ def sendMail(username, pwd):
     try:
         mail_msg = """
         <p> Hello, welcome to use Sigma CMS! </p>
-        <p> Please check whether the following information is correct. 
+        <p> Please check whether the following information is correct.
         If you receive this email by mistake, please ignore it! </p>
         <p> Username: """ + username.split('@')[0] + """</p>
         <p> Please click the following link to activate your account: </p>
@@ -83,7 +83,7 @@ def sendMail(username, pwd):
 '''
     配置发邮件所需的基础信息
     my_sender # 配置发件人邮箱地址***@qq.com
-    my_pass   # 配置发件人邮箱密码 
+    my_pass   # 配置发件人邮箱密码
     to_user   # 配置收件人邮箱地址***@163.com
     my_nick   # 配置发件人昵称草璧月
     to_nick   # 配置收件人昵称方立娇
@@ -408,10 +408,23 @@ def grade(request):
 
 
 '''
-api: /getVotePoster
+api: /pVote
 method: GET
 '''
 
 
-def getVotePoster(request):
-    return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+def pVote(request):
+    if request.method == 'GET':
+        posters_g = Poster.objects.order_by('-voteNum')[:5]
+        data = []
+        for i in range(len(posters_g)):
+            temp = {}
+            if i < 3:
+                url = str(base64.b64encode(posters_g[i].file), 'utf8')
+                temp['url'] = url
+            temp['id'] = posters_g[i].id
+            temp['vote'] = posters_g[i].voteNum
+            temp['author'] = posters_g[i].author
+            data.append(temp)
+        return HttpResponse(json.dumps(data), status=200)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
