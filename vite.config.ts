@@ -29,7 +29,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000/', // 代理的地址
-        changeOrigin: true,
+        changeOrigin: true
       },
       '/api/mock': {
         target: 'http://localhost:8080/', // 对mock进行代理，为了区别非mock的代理
@@ -38,6 +38,7 @@ export default defineConfig({
       }
     }
   },
+  base: './',
   css: {
     preprocessorOptions: {
       less: {
