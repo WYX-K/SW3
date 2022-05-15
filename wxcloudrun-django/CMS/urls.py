@@ -34,4 +34,6 @@ urlpatterns = (
     url(r'editPoster', CMSviews.editPoster),
     url(r'grade', CMSviews.grade),
     url(r'pVote', CMSviews.pVote),
+    url(r'conInfo', CMSviews.conInfo),
+    url(r'changeRules', CMSviews.changeRules),
 )

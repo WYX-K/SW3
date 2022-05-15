@@ -428,3 +428,79 @@ def pVote(request):
             data.append(temp)
         return HttpResponse(json.dumps(data), status=200)
     return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+# ###################################################
+# ###################################################
+# # getVotePoster API
+# ###################################################
+
+
+'''
+api: /pVote
+method: GET
+'''
+
+
+def pVote(request):
+    if request.method == 'GET':
+        posters_g = Poster.objects.order_by('-voteNum')[:5]
+        data = []
+        for i in range(len(posters_g)):
+            temp = {}
+            if i < 3:
+                url = str(base64.b64encode(posters_g[i].file), 'utf8')
+                temp['url'] = url
+            temp['id'] = posters_g[i].id
+            temp['vote'] = posters_g[i].voteNum
+            temp['author'] = posters_g[i].author
+            data.append(temp)
+        return HttpResponse(json.dumps(data), status=200)
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+
+'''
+api: /changeRules
+method: POST
+'''
+
+
+def changeRules(request):
+    if request.method == 'POST':
+        num_headjudge = int(request.POST.get('num_headjudge'))
+        num_firstprize = int(request.POST.get('num_firstprize'))
+        num_judges = int(request.POST.get('num_judges'))
+        num_secondprize = int(request.POST.get('num_secondprize'))
+        num_thirdprize = int(request.POST.get('num_thirdprize'))
+        rules = Rules.objects.get(id=1)
+        if num_headjudge:
+            rules.num_headjudge = num_headjudge
+        if num_firstprize:
+            rules.num_firstprize = num_firstprize
+        if num_judges:
+            rules.num_judges = num_judges
+        if num_secondprize:
+            rules.num_secondprize = num_secondprize
+        if num_thirdprize:
+            rules.num_thirdprize = num_thirdprize
+        rules.save()
+        return HttpResponse(json.dumps({"res": "success"}, ensure_ascii=False), status=200)
+
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)
+
+
+'''
+api: /conInfo
+method: POST
+'''
+
+
+def conInfo(request):
+    if request.method == 'GET':
+        conferences = Conference.objects.get(id=1)
+        data = {}
+        data['date'] = conferences.date
+        data['time'] = conferences.time
+        data['content'] = conferences.content
+        return HttpResponse(json.dumps({"res": "success", "data": data}, ensure_ascii=False), status=200)
+
+    return HttpResponse(json.dumps({"res": "fail"}, ensure_ascii=False), status=500)

@@ -117,3 +117,31 @@ class HeadPoster(models.Model):
 
     def __str__(self):
         return self.poster
+
+
+class Rules(models.Model):
+    num_headjudge = models.IntegerField("Num Head Judges", default=2)
+    num_judges = models.IntegerField("Num Judges", default=14)
+    num_firstprize = models.IntegerField("Num First Prize", default=1)
+    num_secondprize = models.IntegerField("Num Second Prize", default=1)
+    num_thirdprize = models.IntegerField("Num Third Prize", default=1)
+
+    class Meta:
+        verbose_name = "Rules"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.num_headjudge
+
+
+class Conference(models.Model):
+    date = models.CharField("Date", max_length=100, default="")
+    time = models.CharField("Time", max_length=100, default="")
+    content = models.CharField("Content", max_length=1000, default="")
+
+    class Meta:
+        verbose_name = "Conference"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.date
