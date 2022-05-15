@@ -6,6 +6,7 @@ import localePosterUpload from '@/views/poster/upload/locale/zh-CN'
 import localePosterEdit from '@/views/poster/edit/locale/zh-CN'
 import localePosterGrade from '@/views/poster/grade/locale/zh-CN'
 import localeLuckydrawChoose from '@/views/luckydraw/choose/locale/zh-CN'
+import localeRules from '@/views/home/rules/locale/zh-CN'
 
 export default {
   'menu.home': '主页',
@@ -14,6 +15,7 @@ export default {
   'menu.luckydraw': '抽奖',
   'menu.poster.show': '展示 & 投票',
   'menu.poster.upload': '上传',
+  'menu.home.rules': '规则',
   'menu.poster.edit': '编辑',
   'menu.poster.grade': '评分',
   'menu.luckydraw.choose': '选择',
@@ -26,5 +28,6 @@ export default {
   ...localePosterUpload,
   ...localePosterEdit,
   ...localePosterGrade,
-  ...localeLuckydrawChoose
+  ...localeLuckydrawChoose,
+  ...localeRules
 }

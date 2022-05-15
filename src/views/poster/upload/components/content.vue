@@ -98,7 +98,6 @@ import { useI18n } from 'vue-i18n/index'
 import { postPoster } from '@/api/poster'
 
 const { t } = useI18n()
-
 const form = reactive({
   title: '',
   author: '',

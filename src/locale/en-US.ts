@@ -6,12 +6,14 @@ import localePosterUpload from '@/views/poster/upload/locale/en-US'
 import localePosterEdit from '@/views/poster/edit/locale/en-US'
 import localePosterGrade from '@/views/poster/grade/locale/en-US'
 import localeLuckydrawChoose from '@/views/luckydraw/choose/locale/en-US'
+import localeRules from '@/views/home/rules/locale/en-US'
 
 export default {
   'menu.home': 'Home',
   'menu.home.intro': 'Introduction',
   'navbar.action.locale': 'Switch to English',
   'menu.luckydraw': 'Lucky Draw',
+  'menu.home.rules': 'Rules',
   'menu.poster': 'Poster',
   'menu.poster.show': 'Show & Vote',
   'menu.poster.upload': 'Upload',	
@@ -26,5 +28,6 @@ export default {
   ...localePosterUpload,
   ...localePosterEdit,
   ...localePosterGrade,
-  ...localeLuckydrawChoose
+  ...localeLuckydrawChoose,
+  ...localeRules
 }

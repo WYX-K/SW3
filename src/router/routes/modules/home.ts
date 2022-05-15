@@ -19,5 +19,15 @@ export default {
         roles: ['*']
       },
     },
+    {
+      path: 'rules',
+      name: 'rules',
+      component: () => import('@/views/home/rules/index.vue'),
+      meta: {
+        locale: 'menu.home.rules',
+        requiresAuth: true,
+        roles: ['admin']
+      },
+    },
   ],
 }
